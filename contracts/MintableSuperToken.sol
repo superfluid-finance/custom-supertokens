@@ -39,7 +39,7 @@ contract MintableSuperToken is SuperTokenBase {
 		address recipient,
 		uint256 amount,
 		bytes memory userData
-	) external onlyMinter {
+	) external virtual onlyMinter {
 		// ISuperToken.selfMint(address,uint256,bytes);
 		CallHelper._call(
 			address(this),
