@@ -68,8 +68,8 @@ contract MultiMintToken is MintableSuperToken {
 
 	function mint() public {
         // check that minting interval time has passed
-		if (lastMint + mintInterval < block.timestamp)
-			revert IntervalNotPassed();
+		// if (lastMint + mintInterval < block.timestamp)
+		// 	revert IntervalNotPassed();
         
         // gas savings by loading from storage once
         uint256 amount = mintAmount;
@@ -81,7 +81,7 @@ contract MultiMintToken is MintableSuperToken {
         _host().callAgreement(
             ISuperAgreement(ida),
             abi.encodeWithSignature(
-                "distribute(address,uint32,bytes)",
+                "distribute(address,uint32,uint256,bytes)",
                 address(this),
                 _indexId,
                 amount,

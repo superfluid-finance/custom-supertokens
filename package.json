@@ -6,7 +6,9 @@
   "license": "MIT",
   "scripts": {
       "build": "truffle compile --all",
-      "test": "truffle test"
+      "test": "echo 'try test:capped or test:multimint instead' && exit 1",
+      "test:capped": "truffle test ./test/CappedSuperToken.test.js",
+      "test:multimint": "truffle test ./test/MultiMintToken.test.js"
   },
   "devDependencies": {
     "@decentral.ee/web3-helpers": "^0.5.3",

@@ -158,7 +158,12 @@ on minting.
 Minting is checked against the total supply, meaning no more tokens can be
 minted beyond the maxSupply variable.
 
-Tests are available at `./test/CappedSuperToken.sol`.
+Tests are available at `./test/CappedSuperToken.test.js` by calling
+
+```bash
+yarn test:capped
+```
+
 
 ### MultiMintToken.sol
 
@@ -188,4 +193,8 @@ calls are functionally identical to how Superfluid documents them, but this
 has been altered for the sake of avoiding dependency and versioning problems
 encountered with truffle and solidity `^0.8.0`.
 
-Tests are not yet available for this token, but are being developed.
+Tests are available at `./test/MultiMintToken.test.js` by calling
+
+```bash
+yarn test:multimint
+```
