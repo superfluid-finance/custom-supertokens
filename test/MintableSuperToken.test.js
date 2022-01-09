@@ -12,6 +12,7 @@ contract("MintableSuperToken", accounts => {
 
 	let sf
 	let superTokenFactory
+
     // MintableSuperToken methods are called either by proxy
     // or on the contract directly.
     // proxy methods exist on the logic contract (ISuperToken)
@@ -65,16 +66,20 @@ contract("MintableSuperToken", accounts => {
             "0x"
         )
 
+        // get proxy methods from a template
         const { INativeSuperToken } = sf.contracts
         proxy = await INativeSuperToken.at(native.address)
 
+        // store native and proxy methods in the same object
         mintableSuperToken = { native, proxy }
 	})
 
-	it("mints to anyone from alice", async() => {
+	it("alice mints to anyone", async() => {
+
+        // alice mints to self
         await web3tx(
             mintableSuperToken.native.mint,
-            "alice mints 100 SJT to theirself"
+            "alice mints 100 SJT to self"
         )(
             alice,
             toWad(100),
@@ -86,5 +91,93 @@ contract("MintableSuperToken", accounts => {
             (await mintableSuperToken.proxy.balanceOf.call(alice)).toString(),
             toWad(100)
         )
+
+        assert.equal(
+            (await mintableSuperToken.proxy.totalSupply.call()).toString(),
+            toWad(100)
+        )
+
+        // alice mints to bob
+        await web3tx(
+            mintableSuperToken.native.mint,
+            "alice mints 100 SJT to bob"
+        )(
+            bob,
+            toWad(100),
+            "0x",
+            { from: alice }
+        )
+
+        assert.equal(
+            (await mintableSuperToken.proxy.balanceOf.call(alice)).toString(),
+            toWad(100)
+        )
+
+        assert.equal(
+            (await mintableSuperToken.proxy.balanceOf.call(bob)).toString(),
+            toWad(100)
+        )
+
+        assert.equal(
+            (await mintableSuperToken.proxy.totalSupply.call()).toString(),
+            toWad(200)
+        )
+    })
+
+    it('only alice can mint', async () => {
+
+        // alice mints to self
+        await web3tx(
+            mintableSuperToken.native.mint,
+            "alice mints 100 SJT to self"
+        )(
+            alice,
+            toWad(100),
+            "0x",
+            { from: alice }
+        )
+
+        assert.equal(
+            (await mintableSuperToken.proxy.balanceOf.call(alice)).toString(),
+            toWad(100)
+        )
+
+        assert.equal(
+            (await mintableSuperToken.proxy.totalSupply.call()).toString(),
+            toWad(100)
+        )
+
+        // bob tries to mint to self
+        try {
+            await web3tx(
+                mintableSuperToken.native.mint,
+                "bob mints 100 SJT to self"
+            )(
+                bob,
+                toWad(100),
+                "0x",
+                { from: bob }
+            )
+            // always throws to catch, but assert() requires a non-nullish error
+            throw null
+        } catch (error) {
+            assert(error, "Expected Revert")
+        }
+
+        assert.equal(
+            (await mintableSuperToken.proxy.balanceOf.call(alice)).toString(),
+            toWad(100)
+        )
+
+        assert.equal(
+            (await mintableSuperToken.proxy.balanceOf.call(bob)).toString(),
+            '0'
+        )
+
+        assert.equal(
+            (await mintableSuperToken.proxy.totalSupply.call()).toString(),
+            toWad(100)
+        )
+
     })
 })
