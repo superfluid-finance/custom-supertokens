@@ -1,53 +1,50 @@
 // SPDX-License-Identifier: AGPLv3
 pragma solidity ^0.8.0;
 
-import {MintableSuperToken} from "./MintableSuperToken.sol";
-import {CallHelper} from "./utils/CallHelper.sol";
+import {ISuperToken} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperToken.sol";
 
+import {MintableSuperToken} from "./base/MintableSuperToken.sol";
+
+/// @title Mintable Super Token implementation with permissioned minting
+/// @author jtriley.eth
+/// @notice Mint permission set in initializer, transferrable
 contract CappedSuperToken is MintableSuperToken {
+	/// @notice Thrown when address is not authorized to mint
+	error OnlyMinter();
+
 	/// @notice Thrown when supply limit would be exceeded
 	error SupplyCapped();
 
-    /// @notice immutable supply cap
-	uint256 public immutable maxSupply;
+    /// @notice emitted on minter permission transfer
+    /// @param previous Last minter address, or zero address on initialization
+    /// @param current New minter address, or zero address on relinquish
+    event MinterSet(address indexed previous, address indexed current);
 
-	constructor(address minter_, uint256 maxSupply_)
-		MintableSuperToken(minter_)
-	{
-		maxSupply = maxSupply_;
-	}
+	/// @notice supply cap
+    /// @dev not `immutable` unless set in constructor, which isn't possible
+    ///      so omitting functions that could write this variable will suffice.
+	uint256 public maxSupply;
 
-    /// @notice Initializes the super token only once IF it does not exceed supply cap
-	/// @param name super token name
-	/// @param symbol super token symbol
-	/// @param initialRecipient to whom the initial supply is minted
-	/// @param initialSupply initially minted supply, can be zero
-	/// @param userData optional user data for IERC777Recipient callbacks
+    /// @notice permissioned minter
+    address public minter;
+
+	/// @notice Initializes the super token only once IF it does not exceed supply cap
+	/// @param _name Name of Super Token
+	/// @param _symbol Symbol of Super Token
+    /// @param _maxSupply Immutable max supply
+    /// @param _minter Permissioned minting address
 	function initialize(
-		string memory name,
-		string memory symbol,
-		address initialRecipient,
-		uint256 initialSupply,
-		bytes memory userData
-	) external override {
-        if (initialSupply > maxSupply) revert SupplyCapped();
-		// ISuperToken.initialize(address,uint8,string,string);
-		CallHelper._call(
-			address(this),
-			abi.encodeWithSelector(0x42fe0980, address(0), 18, name, symbol)
-		);
-		if (initialSupply > 0) {
-			// ISuperToken.selfMint(address,uint256,bytes);
-			CallHelper._call(
-				address(this),
-				abi.encodeWithSelector(
-					0xc68d4283,
-					initialRecipient,
-					initialSupply,
-					userData
-				)
-			);
-		}
+		string memory _name,
+		string memory _symbol,
+		uint256 _maxSupply,
+        address _minter
+	) external {
+        // underscored parameters to avoid naming collision with maxSupply and minter
+		// SuperTokenBase._initialize(string,string)
+		_initialize(_name, _symbol);
+        maxSupply = _maxSupply;
+        minter = _minter;
+        emit MinterSet(address(0), _minter);
 	}
 
 	/// @notice Mints tokens to recipient if caller is the mitner AND max supply will not be exceeded
@@ -58,20 +55,16 @@ contract CappedSuperToken is MintableSuperToken {
 		address recipient,
 		uint256 amount,
 		bytes memory userData
-	) external override onlyMinter {
-        // There has to be a better way to do this.
-		uint256 totalSupply = abi.decode(
-			CallHelper._staticCall(
-				address(this),
-				abi.encodeWithSelector(0x18160ddd)
-			),
-            (uint256)
-		);
-        if (totalSupply + amount > maxSupply) revert SupplyCapped();
-		// ISuperToken.selfMint(address,uint256,bytes);
-		CallHelper._call(
-			address(this),
-			abi.encodeWithSelector(0xc68d4283, recipient, amount, userData)
-		);
+	) public {
+        if (msg.sender != minter) revert OnlyMinter();
+        // MintableSuperToken._mint(address,uint256,bytes)
+        _mint(recipient, amount, userData);
 	}
+
+    function setMinter(address newMinter) public {
+        address previous = minter;
+        if (msg.sender != previous) revert OnlyMinter();
+        minter = newMinter;
+        emit MinterSet(previous, newMinter);
+    }
 }
