@@ -8,13 +8,19 @@ import {ISuperTokenFactory} from "@superfluid-finance/ethereum-contracts/contrac
 /// @notice Super tokens should be deployed, upgraded, AND initialized in the same
 ///         transaction to avoid front running opportunities
 abstract contract SuperTokenDeployerBase {
-	function _deployAndUpgrade(address factory, bytes memory bytecode, bytes32 salt)
-		internal
-		returns (address _superToken)
-	{
+	/// @notice Should be called by the super token deployer contract BEFORE initialize
+	/// @param factory SuperTokenFactory address for calling the upgrade
+	/// @param bytecode Custom super token bytecode, accessible via type(CustomSuperTokenContract).creationCode
+	/// @param salt Salt of 32 bytes, should be pseudorandom, cryptographic randomness is not required
+    /// @return _superToken Deterministic super token address computed by create2 opcode
+	function _deployAndUpgrade(
+		address factory,
+		bytes memory bytecode,
+		bytes32 salt
+	) internal returns (address _superToken) {
 		assembly {
 			_superToken := create2(0, add(bytecode, 32), mload(bytecode), salt)
 		}
-        ISuperTokenFactory(factory).initializeCustomSuperToken(_superToken);
+		ISuperTokenFactory(factory).initializeCustomSuperToken(_superToken);
 	}
 }
