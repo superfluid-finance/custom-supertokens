@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import {ISuperToken} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperToken.sol";
 
-import {MintableSuperToken} from "./base/MintableSuperToken.sol";
+import {MintableSuperToken} from "../base/MintableSuperToken.sol";
 
 /// @title Mintable Super Token implementation with permissioned minting
 /// @author jtriley.eth
@@ -57,14 +57,21 @@ contract CappedSuperToken is MintableSuperToken {
 		bytes memory userData
 	) public {
         if (msg.sender != minter) revert OnlyMinter();
+		if (_totalSupply() + amount > maxSupply) revert SupplyCapped();
         // MintableSuperToken._mint(address,uint256,bytes)
         _mint(recipient, amount, userData);
 	}
 
+	/// @notice Minter may transfer mint permissions to another address
+	/// @param newMinter new minting address, or zero address if reqlinquishing minting
     function setMinter(address newMinter) public {
-        address previous = minter;
+        address previous = minter; // gas savings
         if (msg.sender != previous) revert OnlyMinter();
         minter = newMinter;
         emit MinterSet(previous, newMinter);
     }
+
+	function _totalSupply() internal view returns (uint256) {
+		return ISuperToken(address(this)).totalSupply();
+	}
 }
