@@ -1,24 +1,28 @@
 {
-  "name": "custom-super-tokens",
-  "version": "1.0.0",
-  "main": "index.js",
-  "author": "Joshua Trujillo <Jtriley15@gmail.com>",
-  "license": "MIT",
-  "scripts": {
-      "build": "truffle compile --all",
-      "test": "echo 'try test:capped or test:multimint instead' && exit 1",
-      "test:capped": "truffle test ./test/CappedSuperToken.test.js",
-      "test:multimint": "truffle test ./test/MultiMintToken.test.js"
-  },
-  "devDependencies": {
-    "@decentral.ee/web3-helpers": "^0.5.3",
-    "@openzeppelin/contracts": "^4.4.1",
-    "@openzeppelin/test-helpers": "^0.5.15",
-    "@superfluid-finance/ethereum-contracts": "^1.0.0-rc.8",
-    "@superfluid-finance/js-sdk": "^0.5.8",
-    "@truffle/contract": "^4.4.2",
-    "@truffle/hdwallet-provider": "^2.0.0",
-    "dotenv": "^10.0.0",
-    "truffle": "^5.4.27"
-  }
+	"name": "custom-super-tokens",
+	"version": "1.0.0",
+	"main": "index.js",
+	"author": "Joshua Trujillo <Jtriley15@gmail.com>",
+	"license": "MIT",
+	"scripts": {
+		"build": "truffle compile --all",
+		"test": "echo 'try test:capped or test:multimint instead' && exit 1",
+		"test:capped": "truffle test ./test/CappedSuperToken.test.js",
+		"test:multimint": "truffle test ./test/MultiMintToken.test.js",
+		"prepare": "husky install"
+	},
+	"devDependencies": {
+		"@decentral.ee/web3-helpers": "^0.5.3",
+		"@openzeppelin/contracts": "^4.4.1",
+		"@openzeppelin/test-helpers": "^0.5.15",
+		"@superfluid-finance/ethereum-contracts": "^1.0.0-rc.8",
+		"@superfluid-finance/js-sdk": "^0.5.8",
+		"@truffle/contract": "^4.4.2",
+		"@truffle/hdwallet-provider": "^2.0.0",
+		"dotenv": "^10.0.0",
+		"husky": "^7.0.4",
+		"prettier": "^2.5.1",
+		"pretty-quick": "^3.1.3",
+		"truffle": "^5.4.27"
+	}
 }
