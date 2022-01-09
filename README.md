@@ -2,6 +2,8 @@
 
 Implementations for extended super token functionality.
 
+---
+
 ## Setup
 
 To set up the repo for development, clone this repo and install dependencies.
@@ -11,6 +13,8 @@ git clone https://github.com/Fluid-X/CustomSuperTokens.git \
     && cd CustomSuperTokens \
     && yarn
 ```
+
+---
 
 ## NOTICE
 
@@ -49,6 +53,8 @@ address(this).call(
 ISuperToken(address(this)).selfMint(account, amount, userData);
 ```
 
+---
+
 ## Utils
 
 The `./contracts/utils` directory provides an implementation for some required
@@ -65,6 +71,8 @@ of a storage padding base than a full super token base.
 This is functionally similar to Superfluid's `UUPSProxy.sol` contract, with a
 few minor gas optimizations. This is the proxy logic that allows the custom
 super token contract to have `SuperToken.sol` functions available to it.
+
+---
 
 ## Base Contracts
 
@@ -127,6 +135,8 @@ the deploy and upgrade transactions, then front-run the call to the initializer,
 setting special permissions and parameters theirself. While this would likely
 be noticed immediately, there may be situations where it doesn't get noticed
 until a non-negligible amount of value is associated with the super token.
+
+---
 
 ## Examples
 
