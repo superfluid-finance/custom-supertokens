@@ -20,10 +20,10 @@
 | 15   | \_name                                 | string                                      | SuperToken.sol       | -           |
 | 16   | \_symbol                               | string                                      | SuperToken.sol       | -           |
 | 17   | \_allowances                           | mapping(address=>mapping(address=>uint256)) | SuperToken.sol       | -           |
-| 18   | ???                                    | ???                                         | ???                  | -           |
-| 19   | ???                                    | ???                                         | ???                  | -           |
-| 20   | ???                                    | ???                                         | ???                  | -           |
-| 21   | ???                                    | ???                                         | ???                  | -           |
+| 18   | \_operators.defaultOperatorsArray      | address[]                                   | SuperToken.sol       | Operators   |
+| 19   | \_operators.defaultOperators           | mapping(address=>bool)                      | SuperToken.sol       | Operators   |
+| 20   | \_operators.operators                  | mapping(address=>mapping(address=>bool))    | SuperToken.sol       | Operators   |
+| 21   | \_operators.revokeDefaultOperators     | mapping(address=>mapping(address=>bool))    | SuperToken.sol       | Operators   |
 | 22   | \_reserve22                            | uint256                                     | SuperToken.sol       | -           |
 | 23   | \_reserve23                            | uint256                                     | SuperToken.sol       | -           |
 | 24   | \_reserve24                            | uint256                                     | SuperToken.sol       | -           |
@@ -35,6 +35,30 @@
 | 30   | \_reserve30                            | uint256                                     | SuperToken.sol       | -           |
 | 31   | \_reserve31                            | uint256                                     | SuperToken.sol       | -           |
 | 32-n | ProxyStorageStart                      | -                                           | -                    | -           |
+
+### always 0x01
+
+It is unknown the reason, but the first storage slot in all super tokens is set
+to 0x01. A `uint256` type is assumed.
+
+### packed
+
+The `uint8 _underlyingDecimals` and `address _underlyingToken` state variables
+are packed into a single storage slot.
+
+### Operators
+
+The `Operators` struct is defined in the ERC777Helper and is assigned to slots
+18 to 21 in `SuperToken.sol`. The struct is defined as follows.
+
+```solidity
+struct Operators {
+	address[] defaultOperatorsArray;
+	mapping(address => bool) defaultOperators;
+	mapping(address => mapping(address => bool)) operators;
+	mapping(address => mapping(address => bool)) revokedDefaultOperators;
+}
+```
 
 ## MATIC Mainnet Example
 
@@ -78,10 +102,10 @@ stored at `keccak256(abi.encode(key, slotNumber))`.
 | 15  | 0x537570657220555344432028506f532900000000000000000000000000000020 | string                                      |
 | 16  | 0x555344437800000000000000000000000000000000000000000000000000000a | string                                      |
 | 17  | 0x0000000000000000000000000000000000000000000000000000000000000000 | mapping(address=>mapping(address=>uint256)) |
-| 18  | 0x0000000000000000000000000000000000000000000000000000000000000000 | uint256                                     |
-| 19  | 0x0000000000000000000000000000000000000000000000000000000000000000 | uint256                                     |
-| 20  | 0x0000000000000000000000000000000000000000000000000000000000000000 | uint256                                     |
-| 21  | 0x0000000000000000000000000000000000000000000000000000000000000000 | uint256                                     |
+| 18  | 0x0000000000000000000000000000000000000000000000000000000000000000 | address[]                                   |
+| 19  | 0x0000000000000000000000000000000000000000000000000000000000000000 | mapping(address=>bool)                      |
+| 20  | 0x0000000000000000000000000000000000000000000000000000000000000000 | mapping(address=>mapping(address=>bool))    |
+| 21  | 0x0000000000000000000000000000000000000000000000000000000000000000 | mapping(address=>mapping(address=>bool))    |
 | 22  | 0x0000000000000000000000000000000000000000000000000000000000000000 | uint256                                     |
 | 23  | 0x0000000000000000000000000000000000000000000000000000000000000000 | uint256                                     |
 | 24  | 0x0000000000000000000000000000000000000000000000000000000000000000 | uint256                                     |
