@@ -6,7 +6,7 @@
 	"license": "MIT",
 	"scripts": {
 		"build": "truffle compile --all",
-		"test": "echo 'try test:capped or test:multimint instead' && exit 1",
+		"test": "truffle test",
 		"test:capped": "truffle test ./test/CappedSuperToken.test.js",
 		"test:multimint": "truffle test ./test/MultiMintToken.test.js",
 		"prepare": "husky install"

@@ -29,7 +29,12 @@ contract("MulitMintToken", accounts => {
 	const [admin, alice, bob, _] = accounts.slice(0, 4)
 
 	before(
-		async () => await deployFramework(errorHandler, { web3, from: admin })
+		async () =>
+			await deployFramework(errorHandler, {
+				web3,
+				from: admin,
+				newTestResolver: true
+			})
 	)
 
 	beforeEach(async () => {
@@ -72,7 +77,7 @@ contract("MulitMintToken", accounts => {
 			alice, // share issuer
 			86400, // mint interval
 			toWad(100), // mint amount
-            { from: alice }
+			{ from: alice }
 		)
 
 		const { INativeSuperToken } = sf.contracts
@@ -83,66 +88,62 @@ contract("MulitMintToken", accounts => {
 	})
 
 	it("alice can distribute to bob", async () => {
-        let index
-        let subscription
+		let index
+		let subscription
 
 		await web3tx(
 			multiMintToken.native.issueShare,
 			"alice issues 1 share to bob"
 		)(bob, 1, { from: alice })
 
-        // check index and subscription
+		// check index and subscription
 		index = await ida.getIndex.call(
 			multiMintToken.native.address,
 			multiMintToken.native.address,
 			INDEX_ID
 		)
-        assert(index.exist)
-        assert.equal(index.indexValue, "0")
+		assert(index.exist)
+		assert.equal(index.indexValue, "0")
 
-        subscription = await ida.getSubscription.call(
-            multiMintToken.native.address,
-            multiMintToken.native.address,
-            INDEX_ID,
-            bob
-        )
-        assert(subscription.exist)
-        assert.equal(subscription.units, 1)
+		subscription = await ida.getSubscription.call(
+			multiMintToken.native.address,
+			multiMintToken.native.address,
+			INDEX_ID,
+			bob
+		)
+		assert(subscription.exist)
+		assert.equal(subscription.units, 1)
 
-        await web3tx(
-            sf.host.callAgreement,
-            "bob approves subscription"
-        )(
-            ida.address,
-            ida.contract.methods.approveSubscription(
-                multiMintToken.native.address,
-                multiMintToken.native.address,
-                INDEX_ID,
-                "0x"
-            ).encodeABI(),
-            "0x",
-            { from: bob }
-        )
+		await web3tx(sf.host.callAgreement, "bob approves subscription")(
+			ida.address,
+			ida.contract.methods
+				.approveSubscription(
+					multiMintToken.native.address,
+					multiMintToken.native.address,
+					INDEX_ID,
+					"0x"
+				)
+				.encodeABI(),
+			"0x",
+			{ from: bob }
+		)
 
-        subscription = await ida.getSubscription.call(
-            multiMintToken.native.address,
-            multiMintToken.native.address,
-            INDEX_ID,
-            bob
-        )
-        assert(subscription.approved)
+		subscription = await ida.getSubscription.call(
+			multiMintToken.native.address,
+			multiMintToken.native.address,
+			INDEX_ID,
+			bob
+		)
+		assert(subscription.approved)
 
-        await web3tx(
-            multiMintToken.native.mint,
-            "alice mints"
-        )()
+		await web3tx(multiMintToken.native.mint, "alice mints")()
 
-        // check index
+		// check index
 		index = await ida.getIndex.call(
 			multiMintToken.native.address,
 			multiMintToken.native.address,
 			INDEX_ID
 		)
-        assert.equal(index.indexValue.toString(), toWad(100))
+		assert.equal(index.indexValue.toString(), toWad(100))
 	})
 })

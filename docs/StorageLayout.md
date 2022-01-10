@@ -34,3 +34,4 @@
 | 29   | \_reserve29                            | uint256                                     | SuperToken.sol       | -           |
 | 30   | \_reserve30                            | uint256                                     | SuperToken.sol       | -           |
 | 31   | \_reserve31                            | uint256                                     | SuperToken.sol       | -           |
+| 32-n | CUSTOM_SUPER_TOKEN_STORAGE_START       | -                                           | -                    | -           |

@@ -29,7 +29,12 @@ contract("CappedSuperToken", accounts => {
 	const [admin, alice, bob, carol] = accounts.slice(0, 4)
 
 	before(
-		async () => await deployFramework(errorHandler, { web3, from: admin })
+		async () =>
+			await deployFramework(errorHandler, {
+				web3,
+				from: admin,
+				newTestResolver: true
+			})
 	)
 
 	beforeEach(async () => {
