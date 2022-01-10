@@ -36,12 +36,12 @@
 | 31   | \_reserve31                            | uint256                                     | SuperToken           | -           |
 | 32-n | ProxyStorageStart                      | -                                           | -                    | -           |
 
-### always 0x01
+### Always 0x01
 
 It is unknown the reason, but the first storage slot in all super tokens is set
 to 0x01. A `uint256` type is assumed.
 
-### packed
+### Packed
 
 The `uint8 _underlyingDecimals` and `address _underlyingToken` state variables
 are packed into a single storage slot.
@@ -59,6 +59,8 @@ struct Operators {
 	mapping(address => mapping(address => bool)) revokedDefaultOperators;
 }
 ```
+
+---
 
 ## MATIC Mainnet Example
 
