@@ -71,7 +71,11 @@ contract CappedSuperToken is MintableSuperToken {
 		emit MinterSet(previous, newMinter);
 	}
 
-	function _totalSupply() internal view returns (uint256) {
-		return ISuperToken(address(this)).totalSupply();
+	/// @notice Loads totalSupply state variable.
+	/// @dev Slot allocated in SuperfluidToken.sol
+	function _totalSupply() internal view returns (uint256 totalSupply) {
+		assembly {
+			totalSupply := sload(2)
+		}
 	}
 }
