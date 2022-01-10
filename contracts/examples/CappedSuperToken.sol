@@ -72,7 +72,7 @@ contract CappedSuperToken is MintableSuperToken {
 	}
 
 	/// @notice Loads totalSupply state variable.
-	/// @dev Slot allocated in SuperfluidToken.sol
+	/// @dev Slot allocated in SuperfluidToken.sol, see ../docs/StorageLayout.md
 	function _totalSupply() internal view returns (uint256 totalSupply) {
 		assembly {
 			totalSupply := sload(2)
