@@ -52,6 +52,7 @@ contract MultiMintToken is MintableSuperToken {
         shareIssuer = _shareIssuer;
 		mintInterval = _mintInterval;
 		mintAmount = _mintAmount;
+		lastMint = 0;
 
         // create the index via the ISuperfluid host
 		_host().callAgreement(
@@ -68,9 +69,11 @@ contract MultiMintToken is MintableSuperToken {
 
 	function mint() public {
         // check that minting interval time has passed
-		// if (lastMint + mintInterval < block.timestamp)
-		// 	revert IntervalNotPassed();
-        
+		if (lastMint + mintInterval > block.timestamp)
+			revert IntervalNotPassed();
+		
+		lastMint = block.timestamp;
+
         // gas savings by loading from storage once
         uint256 amount = mintAmount;
 

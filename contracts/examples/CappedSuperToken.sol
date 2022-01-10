@@ -73,9 +73,10 @@ contract CappedSuperToken is MintableSuperToken {
 
 	/// @notice Loads totalSupply state variable.
 	/// @dev Slot allocated in SuperfluidToken.sol, see ../docs/StorageLayout.md
+	///      Since the variable order doesnt change, it will always be at slot 2
 	function _totalSupply() internal view returns (uint256 totalSupply) {
 		assembly {
-			totalSupply := sload(2)
+			totalSupply := sload(3)
 		}
 	}
 }

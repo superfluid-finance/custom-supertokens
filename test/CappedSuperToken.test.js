@@ -186,6 +186,21 @@ contract("CappedSuperToken", accounts => {
 		} catch (error) {
 			assert(error, "Expected revert")
 		}
+
+		await web3tx(
+			cappedSuperToken.native.mint,
+			"alice mints 500_000 SJT to self"
+		)(alice, toWad("500000"), "0x", { from: alice })
+
+		try {
+			await web3tx(
+				cappedSuperToken.native.mint,
+				"alice tries to mint another 500_001 SJT to self"
+			)(alice, toWad("500001"), "0x", { from: alice })
+			throw null
+		} catch (error) {
+			assert(error, "Expected revert")
+		}
 	})
 
 	it("alice transfers mint permission to bob", async () => {
