@@ -1,45 +1,52 @@
 # Storage Layout of Custom Super Token
 
-| slot | name                                   | type                                        | contract declaration | comment     |
-| ---- | -------------------------------------- | ------------------------------------------- | -------------------- | ----------- |
-| 0    | ???                                    | ???                                         | ???                  | always 0x01 |
-| 1    | \_inactiveAgreementBitmap              | mapping(address=>uint256)                   | SuperfluidToken      | -           |
-| 2    | \_balances                             | mapping(address=>uint256)                   | SuperfluidToken      | -           |
-| 3    | \_totalSupply                          | uint256                                     | SuperfluidToken      | -           |
-| 4    | \_reserve4                             | uint256                                     | SuperfluidToken      | -           |
-| 5    | \_reserve5                             | uint256                                     | SuperfluidToken      | -           |
-| 6    | \_reserve6                             | uint256                                     | SuperfluidToken      | -           |
-| 7    | \_reserve7                             | uint256                                     | SuperfluidToken      | -           |
-| 8    | \_reserve8                             | uint256                                     | SuperfluidToken      | -           |
-| 9    | \_reserve9                             | uint256                                     | SuperfluidToken      | -           |
-| 10   | \_reserve10                            | uint256                                     | SuperfluidToken      | -           |
-| 11   | \_reserve11                            | uint256                                     | SuperfluidToken      | -           |
-| 12   | \_reserve12                            | uint256                                     | SuperfluidToken      | -           |
-| 13   | \_reserve13                            | uint256                                     | SuperfluidToken      | -           |
-| 14   | \_underlyingDecimals,\_underlyingToken | uint8,address                               | SuperToken           | packed      |
-| 15   | \_name                                 | string                                      | SuperToken           | -           |
-| 16   | \_symbol                               | string                                      | SuperToken           | -           |
-| 17   | \_allowances                           | mapping(address=>mapping(address=>uint256)) | SuperToken           | -           |
-| 18   | \_operators.defaultOperatorsArray      | address[]                                   | SuperToken           | Operators   |
-| 19   | \_operators.defaultOperators           | mapping(address=>bool)                      | SuperToken           | Operators   |
-| 20   | \_operators.operators                  | mapping(address=>mapping(address=>bool))    | SuperToken           | Operators   |
-| 21   | \_operators.revokeDefaultOperators     | mapping(address=>mapping(address=>bool))    | SuperToken           | Operators   |
-| 22   | \_reserve22                            | uint256                                     | SuperToken           | -           |
-| 23   | \_reserve23                            | uint256                                     | SuperToken           | -           |
-| 24   | \_reserve24                            | uint256                                     | SuperToken           | -           |
-| 25   | \_reserve25                            | uint256                                     | SuperToken           | -           |
-| 26   | \_reserve26                            | uint256                                     | SuperToken           | -           |
-| 27   | \_reserve27                            | uint256                                     | SuperToken           | -           |
-| 28   | \_reserve28                            | uint256                                     | SuperToken           | -           |
-| 29   | \_reserve29                            | uint256                                     | SuperToken           | -           |
-| 30   | \_reserve30                            | uint256                                     | SuperToken           | -           |
-| 31   | \_reserve31                            | uint256                                     | SuperToken           | -           |
-| 32-n | ProxyStorageStart                      | -                                           | -                    | -           |
+| slot | name                                   | type                                        | contract declaration | comment   |
+| ---- | -------------------------------------- | ------------------------------------------- | -------------------- | --------- |
+| 0    | \_initializing,\_initialized           | bool,bool                                   | Initializable        | init      |
+| 1    | \_inactiveAgreementBitmap              | mapping(address=>uint256)                   | SuperfluidToken      | -         |
+| 2    | \_balances                             | mapping(address=>uint256)                   | SuperfluidToken      | -         |
+| 3    | \_totalSupply                          | uint256                                     | SuperfluidToken      | -         |
+| 4    | \_reserve4                             | uint256                                     | SuperfluidToken      | -         |
+| 5    | \_reserve5                             | uint256                                     | SuperfluidToken      | -         |
+| 6    | \_reserve6                             | uint256                                     | SuperfluidToken      | -         |
+| 7    | \_reserve7                             | uint256                                     | SuperfluidToken      | -         |
+| 8    | \_reserve8                             | uint256                                     | SuperfluidToken      | -         |
+| 9    | \_reserve9                             | uint256                                     | SuperfluidToken      | -         |
+| 10   | \_reserve10                            | uint256                                     | SuperfluidToken      | -         |
+| 11   | \_reserve11                            | uint256                                     | SuperfluidToken      | -         |
+| 12   | \_reserve12                            | uint256                                     | SuperfluidToken      | -         |
+| 13   | \_reserve13                            | uint256                                     | SuperfluidToken      | -         |
+| 14   | \_underlyingDecimals,\_underlyingToken | uint8,address                               | SuperToken           | packed    |
+| 15   | \_name                                 | string                                      | SuperToken           | -         |
+| 16   | \_symbol                               | string                                      | SuperToken           | -         |
+| 17   | \_allowances                           | mapping(address=>mapping(address=>uint256)) | SuperToken           | -         |
+| 18   | \_operators.defaultOperatorsArray      | address[]                                   | SuperToken           | Operators |
+| 19   | \_operators.defaultOperators           | mapping(address=>bool)                      | SuperToken           | Operators |
+| 20   | \_operators.operators                  | mapping(address=>mapping(address=>bool))    | SuperToken           | Operators |
+| 21   | \_operators.revokeDefaultOperators     | mapping(address=>mapping(address=>bool))    | SuperToken           | Operators |
+| 22   | \_reserve22                            | uint256                                     | SuperToken           | -         |
+| 23   | \_reserve23                            | uint256                                     | SuperToken           | -         |
+| 24   | \_reserve24                            | uint256                                     | SuperToken           | -         |
+| 25   | \_reserve25                            | uint256                                     | SuperToken           | -         |
+| 26   | \_reserve26                            | uint256                                     | SuperToken           | -         |
+| 27   | \_reserve27                            | uint256                                     | SuperToken           | -         |
+| 28   | \_reserve28                            | uint256                                     | SuperToken           | -         |
+| 29   | \_reserve29                            | uint256                                     | SuperToken           | -         |
+| 30   | \_reserve30                            | uint256                                     | SuperToken           | -         |
+| 31   | \_reserve31                            | uint256                                     | SuperToken           | -         |
+| 32-n | ProxyStorageStart                      | -                                           | -                    | -         |
 
-### Always 0x01
+### Init
 
-It is unknown the reason, but the first storage slot in all super tokens is set
-to 0x01. A `uint256` type is assumed.
+The OpenZeppelin `Initializable.sol` contract defines two private boolean state
+variables, `_initializing` and `_initialized`. Since booleans are stored as
+`uint8` values, meaning the EVM will pack them into the same storage slot.
+
+While loading slot zero returns:
+`0x0000000000000000000000000000000000000000000000000000000000000001`,
+the storage is actually just `0x 00 01` where the rightmost byte is the value of
+`_initialized` (true) while the next byte to the left is the value of
+`_initializing` (false).
 
 ### Packed
 
