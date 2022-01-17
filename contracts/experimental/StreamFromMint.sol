@@ -149,6 +149,7 @@ contract StreamFromMint is SuperTokenBase {
 		uint256 lastUpdate,
 		uint256 sum
 	) internal {
+        emit MintStreamUpdate(receiver, flowRate, sum);
 		_mintStream = MintStream(receiver, flowRate, lastUpdate, sum);
 	}
 
