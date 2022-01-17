@@ -11,7 +11,7 @@ import {SuperTokenBase} from "../base/SuperTokenBase.sol";
 /// @author jtriley.eth
 /// @notice You should extremely not use this. I have no idea how this might affect solvency.
 contract StreamFromMint is SuperTokenBase {
-	error HowDidThisHappen();
+	error InvalidAddresses();
 
 	event MintStreamUpdate(
 		address indexed receiver,
@@ -71,7 +71,7 @@ contract StreamFromMint is SuperTokenBase {
 		) = _getMintStreamData();
 
 		if (lastReceiver == address(0)) {
-			if (receiver == address(0)) revert HowDidThisHappen();
+			if (receiver == address(0)) revert InvalidAddresses();
 			// create
 			_host().callAgreement(
 				_cfa,
