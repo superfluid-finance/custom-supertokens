@@ -5,12 +5,12 @@ import {ISuperToken} from "@superfluid-finance/ethereum-contracts/contracts/inte
 import {ISuperAgreement} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperAgreement.sol";
 import {ISuperfluid} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
 
-import {MintableSuperToken} from "../base/MintableSuperToken.sol";
+import {SuperTokenBase} from "./base/SuperTokenBase.sol";
 
 /// @title Mintable Super Token that distributes from mint to IDA share holders
 /// @author jtriley.eth
 /// @notice Can be minted by any caller after an interval passes
-contract MultiMintToken is MintableSuperToken {
+contract MultiMintToken is SuperTokenBase {
 	/// @notice Thrown when the time interval has not passed since the last mint
 	error IntervalNotPassed();
 

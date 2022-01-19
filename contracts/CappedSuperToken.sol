@@ -3,12 +3,12 @@ pragma solidity ^0.8.0;
 
 import {ISuperToken} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperToken.sol";
 
-import {MintableSuperToken} from "../base/MintableSuperToken.sol";
+import {SuperTokenBase} from "./base/SuperTokenBase.sol";
 
 /// @title Mintable Super Token implementation with permissioned minting
 /// @author jtriley.eth
 /// @notice Mint permission set in initializer, transferrable
-contract CappedSuperToken is MintableSuperToken {
+contract CappedSuperToken is SuperTokenBase {
 	/// @notice Thrown when address is not authorized to mint
 	error OnlyMinter();
 

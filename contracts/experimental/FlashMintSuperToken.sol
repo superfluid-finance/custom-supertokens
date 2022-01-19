@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import {ISuperToken} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperToken.sol";
 import {IERC3156FlashLender, IERC3156FlashBorrower} from "@openzeppelin/contracts/interfaces/IERC3156.sol";
 
-import {SuperTokenBase} from "./SuperTokenBase.sol";
+import {SuperTokenBase} from "../base/SuperTokenBase.sol";
 
 /// @title Flash Mintable Super Token
 /// @author jtriley.eth

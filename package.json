@@ -7,8 +7,6 @@
 	"scripts": {
 		"build": "truffle compile --all",
 		"test": "truffle test",
-		"test:capped": "truffle test ./test/CappedSuperToken.test.js",
-		"test:multimint": "truffle test ./test/MultiMintToken.test.js",
 		"prepare": "husky install"
 	},
 	"devDependencies": {

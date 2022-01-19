@@ -9,7 +9,7 @@ import {SuperTokenBase} from "../base/SuperTokenBase.sol";
 
 /// @title Super token that can stream from mint
 /// @author jtriley.eth
-/// @notice You should extremely not use this. I have no idea how this might affect solvency.
+/// @notice You should EXTREMELY not use this. I have no idea how this might affect solvency.
 contract StreamFromMint is SuperTokenBase {
 	error InvalidAddresses();
 
