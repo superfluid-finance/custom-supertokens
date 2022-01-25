@@ -47,4 +47,9 @@ abstract contract SuperTokenBase is SuperTokenStorage, UUPSProxy {
 	) internal {
 		ISuperToken(address(this)).selfBurn(from, amount, userData);
 	}
+
+	/// @dev Gets totalSupply
+	function _totalSupply() internal view returns (uint256) {
+		return ISuperToken(address(this)).totalSupply();
+	}
 }
