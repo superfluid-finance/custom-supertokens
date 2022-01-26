@@ -2,13 +2,14 @@
 pragma solidity ^0.8.0;
 
 import {ISuperToken} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperToken.sol";
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 import {SuperTokenBase} from "./base/SuperTokenBase.sol";
 
 /// @title Mintable Super Token implementation with permissioned minting
 /// @author jtriley.eth
 /// @notice Mint permission set in initializer, transferrable
-contract CappedSuperToken is SuperTokenBase {
+contract CappedSuperToken is SuperTokenBase, Ownable {
 
 	/// @notice Thrown when supply limit would be exceeded
 	error SupplyCapped();
@@ -40,7 +41,7 @@ contract CappedSuperToken is SuperTokenBase {
 		address recipient,
 		uint256 amount,
 		bytes memory userData
-	) public {
+	) public onlyOwner {
 		if (_totalSupply() + amount > maxSupply) revert SupplyCapped();
 		// MintableSuperToken._mint(address,uint256,bytes)
 		_mint(recipient, amount, userData);

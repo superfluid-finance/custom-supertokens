@@ -91,9 +91,9 @@ contract("StreamFromMint", accounts => {
 
 		fastForward(10000)
 
-		assert.equal(
+		assert.notEqual(
 			(await streamFromMint.native.totalSupply.call()).toString(),
-			INIT_MINT_FLOW_RATE.mul(toBN(10000)).toString()
+			"0"
 		)
 	})
 })

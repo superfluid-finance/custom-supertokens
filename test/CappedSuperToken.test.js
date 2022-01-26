@@ -70,7 +70,7 @@ contract("CappedSuperToken", accounts => {
 		await web3tx(
 			native.initialize,
 			"CappedSuperToken.initialize by alice max supply of 1_000_000"
-		)("Super Juicy Token", "SJT", MAX_SUPPLY, alice)
+		)("Super Juicy Token", "SJT", MAX_SUPPLY, { from: alice })
 
 		// get proxy methods from a template
 		const { INativeSuperToken } = sf.contracts
@@ -204,29 +204,29 @@ contract("CappedSuperToken", accounts => {
 	})
 
 	it("alice transfers mint permission to bob", async () => {
-		assert.equal(await cappedSuperToken.native.minter.call(), alice)
+		assert.equal(await cappedSuperToken.native.owner.call(), alice)
 
 		await web3tx(
-			cappedSuperToken.native.setMinter,
+			cappedSuperToken.native.transferOwnership,
 			"alice transfers minting permission to bob"
 		)(bob, { from: alice })
 
-		assert.equal(await cappedSuperToken.native.minter.call(), bob)
+		assert.equal(await cappedSuperToken.native.owner.call(), bob)
 	})
 
 	it("bob may not transfer mint permission if not minter", async () => {
-		assert.equal(await cappedSuperToken.native.minter.call(), alice)
+		assert.equal(await cappedSuperToken.native.owner.call(), alice)
 
 		try {
 			await web3tx(
-				cappedSuperToken.native.setMinter,
+				cappedSuperToken.native.transferOwnership,
 				"bob tries to transfer minting permission to self"
 			)(bob, { from: bob })
 		} catch (error) {
 			assert(error, "Expected revert")
 		}
 
-		assert.equal(await cappedSuperToken.native.minter.call(), alice)
+		assert.equal(await cappedSuperToken.native.owner.call(), alice)
 	})
 
 	it("general super token functionality", async () => {
