@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: AGPLv3
 pragma solidity ^0.8.0;
 
-import {ISuperToken} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperToken.sol";
 import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
 
 import {SuperTokenBase} from "./base/SuperTokenBase.sol";
@@ -27,11 +26,12 @@ contract BurnMintSuperToken is SuperTokenBase, AccessControl {
 	function initialize(
 		string memory name,
 		string memory symbol,
+		address factory,
 		uint256 initialSupply,
 		address receiver,
 		bytes memory userData
 	) external {
-		_initialize(name, symbol);
+		_initialize(name, symbol, factory);
 		_mint(receiver, initialSupply, userData);
 	}
 

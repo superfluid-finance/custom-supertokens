@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: AGPLv3
 pragma solidity ^0.8.0;
 
-import {ISuperToken} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperToken.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 import {SuperTokenBase} from "./base/SuperTokenBase.sol";
@@ -13,8 +12,8 @@ contract MintableSuperToken is SuperTokenBase, Ownable {
     /// @notice Initializer, used AFTER factory upgrade
     /// @param name Name of Super Token
     /// @param symbol Symbol of Super Token
-    function initialize(string memory name, string memory symbol) external {
-        _initialize(name, symbol);
+    function initialize(string memory name, string memory symbol, address factory) external {
+        _initialize(name, symbol, factory);
     }
 
 	/// @notice Mints tokens, only the owner may do this

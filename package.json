@@ -13,7 +13,7 @@
 		"@decentral.ee/web3-helpers": "^0.5.3",
 		"@openzeppelin/contracts": "^4.4.1",
 		"@openzeppelin/test-helpers": "^0.5.15",
-		"@superfluid-finance/ethereum-contracts": "^1.0.0-rc.8",
+		"@superfluid-finance/ethereum-contracts": "1.1.1",
 		"@superfluid-finance/js-sdk": "^0.5.8",
 		"@truffle/contract": "^4.4.2",
 		"@truffle/hdwallet-provider": "^2.0.0",

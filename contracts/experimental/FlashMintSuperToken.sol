@@ -8,8 +8,8 @@ import {SuperTokenBase} from "../base/SuperTokenBase.sol";
 
 /// @title Flash Mintable Super Token
 /// @author jtriley.eth
-/// @dev Flash mint fee is not implemented here, but may be implemented on final contract.
-abstract contract FlashMintSuperToken is SuperTokenBase, IERC3156FlashLender {
+/// @dev Flash mint fee is not implemented here.
+contract FlashMintSuperToken is SuperTokenBase, IERC3156FlashLender {
     /// @dev Thrown when token is not this contract
     /// @param token The invalid token address
 	error InvalidToken(address token);
@@ -20,6 +20,17 @@ abstract contract FlashMintSuperToken is SuperTokenBase, IERC3156FlashLender {
     /// @dev Required return value from receiver
 	bytes32 private constant _RETURN_VALUE =
 		keccak256("ERC3156FlashBorrower.onFlashLoan");
+
+	function initialize(
+		string memory name,
+		string memory symbol,
+		address factory,
+		address receiver,
+		uint256 initialSupply
+	) external {
+		_initialize(name, symbol, factory);
+		_mint(receiver, initialSupply);
+	}
 
     /// @dev Returns maximum amount of tokens available for flash loan
     /// @param token Token address to loan

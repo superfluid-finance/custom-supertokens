@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: AGPLv3
 pragma solidity ^0.8.0;
 
-import {ISuperToken} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperToken.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 import {SuperTokenBase} from "./base/SuperTokenBase.sol";
@@ -20,16 +19,17 @@ contract CappedSuperToken is SuperTokenBase, Ownable {
 	uint256 public maxSupply;
 
 	/// @notice Initializes the super token only once IF it does not exceed supply cap
-	/// @param _name Name of Super Token
-	/// @param _symbol Symbol of Super Token
+	/// @param name Name of Super Token
+	/// @param symbol Symbol of Super Token
 	/// @param _maxSupply Immutable max supply
 	function initialize(
-		string memory _name,
-		string memory _symbol,
+		string memory name,
+		string memory symbol,
+		address factory,
 		uint256 _maxSupply
 	) external {
 		// SuperTokenBase._initialize(string,string)
-		_initialize(_name, _symbol);
+		_initialize(name, symbol, factory);
 		maxSupply = _maxSupply;
 	}
 
