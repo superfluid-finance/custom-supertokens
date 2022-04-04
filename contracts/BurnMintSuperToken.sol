@@ -23,6 +23,10 @@ contract BurnMintSuperToken is SuperTokenBase, AccessControl {
 	/// @dev We MUST mint here, there is no other way to mint tokens
 	/// @param name Name of Super Token
 	/// @param symbol Symbol of Super Token
+	/// @param factory Super Token factory for initialization
+	/// @param initialSupply Initial token supply to pre-mint
+	/// @param receiver Receiver of pre-mint
+	/// @param userData Arbitrary user data for pre-mint
 	function initialize(
 		string memory name,
 		string memory symbol,

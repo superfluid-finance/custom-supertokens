@@ -15,14 +15,17 @@ contract("StreamFromMint", accounts => {
 
 	let sf
 	let cfa
-	let superTokenFactory
+	let superTokenFactoryAddress
 
-	let native
+	// Functions on the proxy contract (StreamFromMint.sol) are called with `streamFromMint.proxy`
+	// Functions on the implementation contract (SuperToken.sol) are called with `streamFromMint.impl`
+	let impl
+	let proxy
 	let streamFromMint
 
 	const INIT_MINT_FLOW_RATE = toWad(200)
 
-	const [admin, alice, bob] = accounts.slice(0, 4)
+	const [admin, alice] = accounts.slice(0, 2)
 
 	before(
 		async () =>
@@ -44,45 +47,46 @@ contract("StreamFromMint", accounts => {
 
 		cfa = sf.agreements.cfa
 
-		superTokenFactory = await sf.contracts.ISuperTokenFactory.at(
-			await sf.host.getSuperTokenFactory.call()
-		)
+		superTokenFactoryAddress = await sf.host.getSuperTokenFactory.call()
 
-		native = await web3tx(
+		proxy = await web3tx(
 			StreamFromMint.new,
 			"StreamFromMint.new by alice"
 		)({ from: alice })
 
 		await web3tx(
-			superTokenFactory.initializeCustomSuperToken,
-			"StreamFromMint contract upgrade by alice"
-		)(native.address, { from: alice })
-
-		await web3tx(
-			native.initialize,
+			proxy.initialize,
 			"StreamFromMint.initialize by alice max supply of 1_000_000"
-		)("Super Juicy Token", "SJT", cfa.address, alice, INIT_MINT_FLOW_RATE, {
-			from: alice
-		})
+		)(
+			"Super Juicy Token",
+			"SJT",
+			superTokenFactoryAddress,
+			cfa.address,
+			alice,
+			INIT_MINT_FLOW_RATE,
+			{
+				from: alice
+			}
+		)
 
 		// get proxy methods from a template
 		const { INativeSuperToken } = sf.contracts
-		proxy = await INativeSuperToken.at(native.address)
+		impl = await INativeSuperToken.at(proxy.address)
 
 		// store native and proxy methods in the same object
-		streamFromMint = { native, proxy }
+		streamFromMint = { impl, proxy, address: proxy.address }
 	})
 
-	it("flow is legit", async () => {
+	it("mint stream can be created", async () => {
 		assert.equal(
-			(await streamFromMint.native.totalSupply.call()).toString(),
+			(await streamFromMint.proxy.totalSupply.call()).toString(),
 			"0"
 		)
 		assert.equal(
 			(
 				await cfa.getFlow.call(
-					streamFromMint.native.address,
-					streamFromMint.native.address,
+					streamFromMint.address,
+					streamFromMint.address,
 					alice
 				)
 			).flowRate.toString(),
@@ -92,8 +96,12 @@ contract("StreamFromMint", accounts => {
 		fastForward(10000)
 
 		assert.notEqual(
-			(await streamFromMint.native.totalSupply.call()).toString(),
+			(await streamFromMint.proxy.totalSupply.call()).toString(),
 			"0"
 		)
 	})
+
+	console.log(
+		"STOP. If you think this is enough tests to go put this in prod, stop thinking that. Don't do what you're thinking about doing. Please."
+	)
 })

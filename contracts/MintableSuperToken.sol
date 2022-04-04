@@ -12,6 +12,7 @@ contract MintableSuperToken is SuperTokenBase, Ownable {
     /// @notice Initializer, used AFTER factory upgrade
     /// @param name Name of Super Token
     /// @param symbol Symbol of Super Token
+	/// @param factory Super token factory for initialization
     function initialize(string memory name, string memory symbol, address factory) external {
         _initialize(name, symbol, factory);
     }
