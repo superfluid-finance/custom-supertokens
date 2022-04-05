@@ -1,8 +1,6 @@
 require("dotenv").config()
 
 module.exports = {
-	plugins: ["truffle-plugin-verify"],
-
 	networks: {
 		ganache: {
 			host: "127.0.0.1",

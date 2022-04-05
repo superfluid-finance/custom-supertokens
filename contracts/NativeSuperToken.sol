@@ -5,7 +5,7 @@ import {SuperTokenBase} from "./base/SuperTokenBase.sol";
 
 /// @title Minimal Native Super Token
 /// @author jtriley.eth
-/// @notice Pre-minted supply. This is includes no custom logic.
+/// @notice Pre-minted supply. This is includes no custom logic. Used in `NativeSuperTokenDeployer`
 contract NativeSuperToken is SuperTokenBase {
 
 	/// @dev Upgrades the super token with the factory, then initializes.

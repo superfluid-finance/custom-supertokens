@@ -4,7 +4,7 @@ const {
 	builtTruffleContractLoader
 } = require("@superfluid-finance/ethereum-contracts/scripts/libs/common")
 const SuperfluidSDK = require("@superfluid-finance/js-sdk")
-const { fastForward } = require("./util")
+const { fastForward } = require("../util")
 
 const StreamFromMint = artifacts.require("StreamFromMint")
 

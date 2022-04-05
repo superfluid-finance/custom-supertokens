@@ -33,7 +33,10 @@ contract NativeSuperTokenDeployer {
         address receiver,
         uint256 initialSupply
     ) external returns (address newSuperToken) {
-        newSuperToken = _create2(keccak256(abi.encode(name, symbol, msg.sender)));
+
+        // (string . address . string) with `abi.encodePacked` is more efficient and prevents a
+        // hashing collision. See https://swcregistry.io/docs/SWC-133
+        newSuperToken = _create2(keccak256(abi.encodePacked(name, msg.sender, symbol)));
 
         // NativeSuperToken has a payable fallback in `Proxy`
         // Proxy -> UUPSProxy -> SuperTokenBase -> NativeSuperToken
