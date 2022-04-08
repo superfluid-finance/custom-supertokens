@@ -86,115 +86,42 @@ UUPS Proxy implementation, and a minimal `_initialize` function. Inheriting
 contracts should implement their own external `initialize` function, which will
 call this internal function before executing any other logic.
 
-If this is inherited to omit the minting and burning functionality offered by
-other contracts in this directory, then either a custom minting or burning
-function should be implemented, OR the contract should self mint in the
-initializer. See the above examples to call the `selfMint` function.
-
-### BurnableMintableSuperToken.sol
-
-This abstract contract implements internal `_mint` and `_burn` functions.
-
-Inheriting contracts can access these internal functions directly. The contract
-does not, however, make any checks for permissions or other guards for the sake
-of modularity, so inheriting contracts _MUST_ perform these checks to prevent
-malicious minting and burning calls.
-
-### BurnableSuperToken.sol
-
-This abstract contract only implements the internal `_burn` function.
-
-Inheriting contracts can access the function directly. As above, the contract
-does not perform checks, so inheriting contracts will need to do this when
-calling `_burn`. Since no minting functionality is provided in this contract,
-the initial supply should be minted in the initializer. See above examples to
-call the `selfMint` function on initialization.
-
-### MintableSuperToken.sol
-
-This abstract contract only implements the internal `_mint` function.
-
-Inheriting contracts can access the function directly. As above, the contract
-does not perform checks, so inheriting contracts will need to do this when
-calling `_mint`.
-
-### SuperTokenDeployerBase.sol
-
-This abstract contract is under development still.
-
-The intention with this contract is to abstract away the super token creation
-and upgrading by the super token factory. This contract will be inherited by
-other deployer contracts, but the inheriting deployer contract should call this
-function first, _THEN_ call the custom defined `initialize` function on the
-Super Token. Failing to deploy, upgrade, and initialize in the same transaction
-could result in front running opportunities.
-
-If the custom `initialize` function sets any special permissions or state
-variables on the custom super token contract, a front-runner could listen for
-the deploy and upgrade transactions, then front-run the call to the initializer,
-setting special permissions and parameters theirself. While this would likely
-be noticed immediately, there may be situations where it doesn't get noticed
-until a non-negligible amount of value is associated with the super token.
-
 ---
 
-## Examples
+## Proxy Contracts
 
 These are some example custom super tokens, both to demonstrate usage of the
 abstract contracts, and to test out unique super token functionality.
 
+### BurnableSuperToken.sol
+
+The BurnableSuperToken is a burnable super token with the supply minted on
+initialization.
+
 ### CappedSuperToken.sol
 
-The CappedSuperToken is a mintable super token that has a maximum supply. While
-the maxSupply is technically not immutable due to constructor restrictions,
-there are no functions that can overrite the maxSupply after being initialized
-in this implementation.
+The CappedSuperToken is a mintable super token with an immutable maximum supply.
+No tokens are minted on initialization.
 
-Minting is permissioned to a single address at a time, and only the minter may
-transfer minting permissions to other addresses. Ideally, this minting
-permission would be controlled by an external contract with further restrictions
-on minting.
+### BurnMintSuperToken.sol
 
-Minting is checked against the total supply, meaning no more tokens can be
-minted beyond the maxSupply variable.
+The BurnMintSuperToken is a burnable and mintable super token with role-based
+permissions from Open Zeppelin's AccessControl contract. An initial supply is
+minted on initialization.
 
-Tests are available at `./test/CappedSuperToken.test.js` by calling
+### MintableSuperToken.sol
 
-```bash
-yarn test:capped
-```
+The MintableSuperToken is a mintable super token with owner-based permissions
+from Open Zeppelin's Ownable contract. No tokens are minted on initialization.
 
+### NativeSuperToken.sol
 
-### MultiMintToken.sol
+The NativeSuperToken is a minimal super token, no different from the ones
+deployed from the protocol monorepo scripts. This serves as a deployable
+contract via NativeSuperTokenDeployer.
 
-The MultiMintToken is a different take on minting super tokens. When the super
-token is initialized, it creates an InstantDistributionAgreementV1 index. Any
-time tokens are minted in the future, they are immediately distributed to all
-subscribers to this index.
+### NativeSuperTokenDeployer
 
-A permissioned shareIssuer address can issue shares to any addresses. This would
-ideally be an external contract with some restrictions and checks. This could be
-used in the context of airdrops, where participants are issued shares in
-response to arbitrary conditions being met, and any time new tokens are minted,
-the share holders' balances are all updated in a single transaction.
-
-The minting is restricted to a set interval, meaning a certain number of seconds
-_MUST_ have passed before a new mint can be executed. Because of this time
-restriction, any address may call mint, as no address stands to gain more from
-being the one to call it.
-
-The mint amount is also set on initialization, to insure a linear increase in
-supply, though other contracts may want to implement non-linear supply
-increases.
-
-If you are familiar with how agreement calling is normally handled, you'll
-notice a few differences in how agreements are called in this contract. These
-calls are functionally identical to how Superfluid documents them, but this
-has been altered for the sake of avoiding dependency and versioning problems
-encountered with truffle and solidity `^0.8.0`.
-
-Tests are available at `./test/MultiMintToken.test.js` by calling
-
-```bash
-yarn test:multimint
-```
+The NativeSuperTokenDeployer is a 'factory' contract that deploys, upgrades, and
+initializes the NativeSuperToken in a single transaction. This makes it much
+easier to deploy super tokens from a UI.

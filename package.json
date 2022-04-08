@@ -7,7 +7,11 @@
 	"scripts": {
 		"build": "truffle compile --all",
 		"test": "truffle test",
-		"prepare": "husky install"
+		"prepare": "husky install",
+		"deploy:Burnable": "truffle exec scripts/BurnableSuperToken.js",
+		"deploy:BurnMint": "truffle exec scripts/BurnMintSuperToken.js",
+		"deploy:Capped": "truffle exec scripts/CappedSuperToken.js",
+		"deploy:Mintable": "truffle exec scripts/MintableSuperToken.js"
 	},
 	"devDependencies": {
 		"@decentral.ee/web3-helpers": "^0.5.3",
