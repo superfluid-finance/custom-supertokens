@@ -7,6 +7,7 @@ import {SuperTokenBase} from "./base/SuperTokenBase.sol";
 /// @author jtriley.eth
 /// @notice This does not perform checks when burning
 contract BurnableSuperToken is SuperTokenBase {
+
 	/// @notice Initializer, used AFTER factory upgrade
 	/// @dev We MUST mint here, there is no other way to mint tokens
 	/// @param name Name of Super Token

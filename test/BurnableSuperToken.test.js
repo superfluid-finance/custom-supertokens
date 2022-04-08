@@ -160,9 +160,6 @@ contract("BurnableSuperToken", accounts => {
 
 		await web3tx(sf.host.callAgreement, "bob stops flow to carol")(
 			cfa.address,
-			cfa.contract.methods
-				.deleteFlow(burnableSuperToken.address, bob, carol, "0x")
-				.encodeABI(),
 			"0x",
 			{ from: bob }
 		)

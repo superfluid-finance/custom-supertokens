@@ -5,7 +5,7 @@ import {ISuperToken} from "@superfluid-finance/ethereum-contracts/contracts/inte
 import {ISuperAgreement} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperAgreement.sol";
 import {ISuperfluid} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
 
-import {SuperTokenBase} from "./base/SuperTokenBase.sol";
+import {SuperTokenBase} from "../base/SuperTokenBase.sol";
 
 /// @title Mintable Super Token that distributes from mint to IDA share holders
 /// @author jtriley.eth
