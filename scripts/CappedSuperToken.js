@@ -4,8 +4,8 @@ const { factory } = require("./utils/constants")
 const CappedSuperToken = artifacts.require("CappedSuperToken")
 
 module.exports = async function (callback) {
-	const name = "Burnable/Mintable Super Token"
-	const symbol = "BMST"
+	const name = "Capped Super Token"
+	const symbol = "CST"
 	const maxSupply = "1"
 
 	try {

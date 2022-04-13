@@ -7,7 +7,7 @@ module.exports = async function (callback) {
 	const name = "Burnable/Mintable Super Token"
 	const symbol = "BMST"
 	const initialSupply = "1"
-	const receiver = "0x46b2711013306162f117C7cAd313f0661D6bFD3F"
+	const receiver = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
 	const userData = "0x"
 
 	try {

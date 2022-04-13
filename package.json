@@ -1,9 +1,8 @@
 {
-	"name": "custom-super-tokens",
+	"name": "@superfluid-finance/supertokens",
 	"version": "1.0.0",
-	"main": "index.js",
-	"author": "Joshua Trujillo <Jtriley15@gmail.com>",
-	"license": "MIT",
+	"author": "jtriley.eth",
+	"license": "AGPL-3.0",
 	"scripts": {
 		"build": "truffle compile --all",
 		"test": "truffle test",
@@ -13,11 +12,13 @@
 		"deploy:Capped": "truffle exec scripts/CappedSuperToken.js",
 		"deploy:Mintable": "truffle exec scripts/MintableSuperToken.js"
 	},
+	"dependencies": {
+		"@superfluid-finance/ethereum-contracts": "1.1.1",
+		"@openzeppelin/contracts": "^4.4.1"
+	},
 	"devDependencies": {
 		"@decentral.ee/web3-helpers": "^0.5.3",
-		"@openzeppelin/contracts": "^4.4.1",
 		"@openzeppelin/test-helpers": "^0.5.15",
-		"@superfluid-finance/ethereum-contracts": "1.1.1",
 		"@superfluid-finance/js-sdk": "^0.5.8",
 		"@truffle/contract": "^4.4.2",
 		"@truffle/hdwallet-provider": "^2.0.0",

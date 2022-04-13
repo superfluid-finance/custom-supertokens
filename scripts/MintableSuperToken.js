@@ -4,8 +4,8 @@ const { factory } = require("./utils/constants")
 const MintableSuperToken = artifacts.require("MintableSuperToken")
 
 module.exports = async function (callback) {
-	const name = "Burnable/Mintable Super Token"
-	const symbol = "BMST"
+	const name = "Mintable Super Token"
+	const symbol = "MST"
 
 	try {
 		setWeb3Provider(web3.currentProvider)
