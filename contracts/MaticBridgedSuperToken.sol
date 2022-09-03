@@ -24,13 +24,13 @@ contract MaticBridgedSuperToken is SuperTokenBase, IMaticBridgedSuperTokenCustom
     /// @param name Name of Super Token
     /// @param symbol Symbol of Super Token
     /// @param factory Super Token factory for initialization
-	function initialize(
-		string memory name,
-		string memory symbol,
-		address factory
-	) external {
-		_initialize(name, symbol, factory);
-	}
+    function initialize(
+        string memory name,
+        string memory symbol,
+        address factory
+    ) external {
+        _initialize(name, symbol, factory);
+    }
 
     /// @inheritdoc IMaticBridgedSuperTokenCustom
     function deposit(address user, bytes calldata depositData) external override {
