@@ -1148,7 +1148,7 @@
 
 "@superfluid-finance/js-sdk@0.6.1":
   version "0.6.1"
-  resolved "https://npm.pkg.github.com/download/@superfluid-finance/js-sdk/0.6.1/818934788bf320b1f6cb4551ce8cf6a72aa98e21#818934788bf320b1f6cb4551ce8cf6a72aa98e21"
+  resolved "https://registry.yarnpkg.com/@superfluid-finance/js-sdk/-/js-sdk-0.6.1.tgz#818934788bf320b1f6cb4551ce8cf6a72aa98e21"
   integrity sha512-wAXKawmYKY6A9ae3+BHFuKgSb6/IxgBP5UshLJDhmAZmVlZallyDzJMnQszq5T3jJM+C+hDaR4+VmThiqcE4MQ==
   dependencies:
     "@ethersproject/abi" "^5.6.0"
