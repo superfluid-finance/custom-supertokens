@@ -21,9 +21,9 @@ contract MaticBridgedSuperToken is SuperTokenBase, IMaticBridgedSuperTokenCustom
     }
 
     /// @notice Initializes the super token
-	/// @param name Name of Super Token
-	/// @param symbol Symbol of Super Token
-	/// @param factory Super Token factory for initialization
+    /// @param name Name of Super Token
+    /// @param symbol Symbol of Super Token
+    /// @param factory Super Token factory for initialization
 	function initialize(
 		string memory name,
 		string memory symbol,
