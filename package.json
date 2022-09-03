@@ -19,7 +19,7 @@
 	"devDependencies": {
 		"@decentral.ee/web3-helpers": "^0.5.3",
 		"@openzeppelin/test-helpers": "^0.5.15",
-		"@superfluid-finance/js-sdk": "^0.6.2",
+		"@superfluid-finance/js-sdk": "^0.6.0",
 		"@truffle/contract": "4.5.15",
 		"@truffle/hdwallet-provider": "^2.0.0",
 		"dotenv": "^10.0.0",
