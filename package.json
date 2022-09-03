@@ -13,15 +13,14 @@
 		"deploy:Mintable": "truffle exec scripts/MintableSuperToken.js"
 	},
 	"dependencies": {
-		"@openzeppelin/contracts": "^4.4.1",
-		"@superfluid-finance/ethereum-contracts": "1.1.1",
-		"eslint": "^8.23.0"
+		"@openzeppelin/contracts": "^4.7.0",
+		"@superfluid-finance/ethereum-contracts": "1.3.1"
 	},
 	"devDependencies": {
 		"@decentral.ee/web3-helpers": "^0.5.3",
 		"@openzeppelin/test-helpers": "^0.5.15",
 		"@superfluid-finance/js-sdk": "^0.5.8",
-		"@truffle/contract": "^4.5.0",
+		"@truffle/contract": "4.5.15",
 		"@truffle/hdwallet-provider": "^2.0.0",
 		"dotenv": "^10.0.0",
 		"husky": "^7.0.4",
