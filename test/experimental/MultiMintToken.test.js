@@ -39,7 +39,6 @@ contract("MulitMintToken", accounts => {
 		sf = new SuperfluidSDK.Framework({
 			web3,
 			version: "test",
-			additionalContracts: ["INativeSuperToken"],
 			contractLoader: builtTruffleContractLoader
 		})
 		await sf.initialize()
@@ -68,9 +67,9 @@ contract("MulitMintToken", accounts => {
 			{ from: alice }
 		)
 
-		const { INativeSuperToken } = sf.contracts
+		const { ISuperToken } = sf.contracts
 
-		impl = await INativeSuperToken.at(proxy.address)
+		impl = await ISuperToken.at(proxy.address)
 
 		multiMintToken = { impl, proxy, address: proxy.address }
 	})

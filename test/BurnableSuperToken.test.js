@@ -39,7 +39,6 @@ contract("BurnableSuperToken", accounts => {
 		sf = new SuperfluidSDK.Framework({
 			web3,
 			version: "test",
-			additionalContracts: ["INativeSuperToken"],
 			contractLoader: builtTruffleContractLoader
 		})
 		await sf.initialize()
@@ -67,8 +66,8 @@ contract("BurnableSuperToken", accounts => {
 		)
 
 		// get impl functions from the framework
-		const { INativeSuperToken } = sf.contracts
-		impl = await INativeSuperToken.at(proxy.address)
+		const { ISuperToken } = sf.contracts
+		impl = await ISuperToken.at(proxy.address)
 
 		// adding `address` to keep things simple
 		burnableSuperToken = { impl, proxy, address: proxy.address }
