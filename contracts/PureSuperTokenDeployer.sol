@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: AGPLv3
 pragma solidity ^0.8.0;
 
-import {NativeSuperToken} from "./NativeSuperToken.sol";
+import {PureSuperToken} from "./PureSuperToken.sol";
 
-/// @title Native Super Token deployment 'Factory'
+/// @title Pure Super Token deployment 'Factory'
 /// @author jtriley.eth
 /// @dev Notice this is not the `SuperTokenFactory`, which handles upgrading contracts. This is a
 /// minimal contract simply to deploy, upgrade, and initialize the most minimal super token possible
-contract NativeSuperTokenDeployer {
-
+contract PureSuperTokenDeployer {
+    
     /// @dev Emitted when new super token deployed and initialized
     /// @param newSuperToken New Super Token address
     event SuperTokenDeployed(address newSuperToken);
@@ -38,9 +38,9 @@ contract NativeSuperTokenDeployer {
         // hashing collision. See https://swcregistry.io/docs/SWC-133
         newSuperToken = _create2(keccak256(abi.encodePacked(name, msg.sender, symbol)));
 
-        // NativeSuperToken has a payable fallback in `Proxy`
-        // Proxy -> UUPSProxy -> SuperTokenBase -> NativeSuperToken
-        NativeSuperToken(payable(newSuperToken)).initialize(
+        // PureSuperToken has a payable fallback in `Proxy`
+        // Proxy -> UUPSProxy -> SuperTokenBase -> PureSuperToken
+        PureSuperToken(payable(newSuperToken)).initialize(
             name,
             symbol,
             _factory,
@@ -55,7 +55,7 @@ contract NativeSuperTokenDeployer {
     /// @param salt unique 32 byte salt
     /// @return newSuperToken Address of newly created super token
     function _create2(bytes32 salt) internal returns (address newSuperToken) {
-        bytes memory _bytecode = type(NativeSuperToken).creationCode;
+        bytes memory _bytecode = type(PureSuperToken).creationCode;
         assembly {
             newSuperToken := create2(
                 0,
@@ -65,5 +65,4 @@ contract NativeSuperTokenDeployer {
             )
         }
     }
-
 }

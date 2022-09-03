@@ -5,10 +5,11 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 import {SuperTokenBase} from "./base/SuperTokenBase.sol";
 
-/// @title Mintable Super Token
+/// @title Mintable Pure Super Token
 /// @author jtriley.eth
 /// @notice Only the owner may mint
 contract MintableSuperToken is SuperTokenBase, Ownable {
+	
     /// @notice Initializer, used AFTER factory upgrade
     /// @param name Name of Super Token
     /// @param symbol Symbol of Super Token

@@ -5,7 +5,7 @@ import {ISuperToken} from "@superfluid-finance/ethereum-contracts/contracts/inte
 import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
 
 import {SuperTokenBase} from "../base/SuperTokenBase.sol";
-import {IForwarder} from "../utils/IForwarder.sol";
+import {IForwarder} from "./IForwarder.sol";
 
 /// @title Burnable and Mintable Super Token
 /// @author jtriley.eth

@@ -101,7 +101,9 @@ contract("StreamFromMint", accounts => {
 		)
 	})
 
-	console.log(
-		"STOP. If you think this is enough tests to go put this in prod, stop thinking that. Don't do what you're thinking about doing. Please."
-	)
+	it("STOP", async () => {
+		console.log(
+			"STOP. If you think this is enough tests to go put this in prod, stop thinking that. Don't do what you're thinking about doing. Please."
+		)
+	})
 })

@@ -5,7 +5,7 @@ import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
 
 import {SuperTokenBase} from "./base/SuperTokenBase.sol";
 
-/// @title Burnable and Mintable Super Token
+/// @title Burnable and Mintable Pure Super Token
 /// @author jtriley.eth
 /// @notice This does not perform checks when burning
 contract BurnMintSuperToken is SuperTokenBase, AccessControl {
