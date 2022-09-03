@@ -6,11 +6,6 @@ const {
 const SuperfluidSDK = require("@superfluid-finance/js-sdk")
 const { expectRevert } = require("@openzeppelin/test-helpers")
 const MaticBridgedSuperToken = artifacts.require("MaticBridgedSuperToken")
-const IMaticBridgedSuperToken = artifacts.require("IMaticBridgedSuperToken")
-const ISuperTokenFactory = artifacts.require(
-	"@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperTokenFactory.sol"
-)
-const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000"
 const AMOUNT_1 = toWad(3)
 const AMOUNT_2 = toWad(5000)
 
@@ -20,7 +15,6 @@ contract("MaticBridgedSuperToken", accounts => {
 	}
 
 	let sf
-	let cfa
 	let superTokenFactoryAddress
 	let token
 	const [admin, chainMgr, bob] = accounts.slice(0, 3)
@@ -42,7 +36,6 @@ contract("MaticBridgedSuperToken", accounts => {
 		})
 
 		await sf.initialize()
-		cfa = sf.agreements.cfa
 		superTokenFactoryAddress = await sf.host.getSuperTokenFactory.call()
 
 		console.log("chainMgr: ", chainMgr)
@@ -81,7 +74,7 @@ contract("MaticBridgedSuperToken", accounts => {
 				bob,
 				web3.eth.abi.encodeParameter("uint256", AMOUNT_1)
 			),
-			"MBPSuperToken: no permission to deposit"
+			"MBST: no permission to deposit"
 		)
 
 		await token.proxy.deposit(
@@ -99,7 +92,7 @@ contract("MaticBridgedSuperToken", accounts => {
 
 		await expectRevert(
 			token.proxy.updateChildChainManager(bob),
-			"MBPSuperToken: only governance allowed"
+			"MBST: only governance allowed"
 		)
 	})
 

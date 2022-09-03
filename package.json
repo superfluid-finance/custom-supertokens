@@ -13,8 +13,9 @@
 		"deploy:Mintable": "truffle exec scripts/MintableSuperToken.js"
 	},
 	"dependencies": {
+		"@openzeppelin/contracts": "^4.4.1",
 		"@superfluid-finance/ethereum-contracts": "1.1.1",
-		"@openzeppelin/contracts": "^4.4.1"
+		"eslint": "^8.23.0"
 	},
 	"devDependencies": {
 		"@decentral.ee/web3-helpers": "^0.5.3",

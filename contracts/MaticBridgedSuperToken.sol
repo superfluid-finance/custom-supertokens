@@ -34,7 +34,7 @@ contract MaticBridgedSuperToken is SuperTokenBase, IMaticBridgedSuperTokenCustom
 
     /// @inheritdoc IMaticBridgedSuperTokenCustom
     function deposit(address user, bytes calldata depositData) external override {
-        require(msg.sender == childChainManager, "MBPSuperToken: no permission to deposit");
+        require(msg.sender == childChainManager, "MBST: no permission to deposit");
         uint256 amount = abi.decode(depositData, (uint256));
         ISuperToken(address(this)).selfMint(user, amount, new bytes(0));
     }
@@ -49,7 +49,7 @@ contract MaticBridgedSuperToken is SuperTokenBase, IMaticBridgedSuperTokenCustom
     function updateChildChainManager(address newChildChainManager) external override {
         address host = ISuperToken(address(this)).getHost();
         address gov = address(ISuperfluid(host).getGovernance());
-        require(msg.sender == gov, "MBPSuperToken: only governance allowed");
+        require(msg.sender == gov, "MBST: only governance allowed");
 
         childChainManager = newChildChainManager;
         emit ChildChainManagerChanged(newChildChainManager);
