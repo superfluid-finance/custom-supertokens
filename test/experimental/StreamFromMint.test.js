@@ -40,7 +40,6 @@ contract("StreamFromMint", accounts => {
 		sf = new SuperfluidSDK.Framework({
 			web3,
 			version: "test",
-			additionalContracts: ["INativeSuperToken"],
 			contractLoader: builtTruffleContractLoader
 		})
 		await sf.initialize()
@@ -70,10 +69,9 @@ contract("StreamFromMint", accounts => {
 		)
 
 		// get proxy methods from a template
-		const { INativeSuperToken } = sf.contracts
-		impl = await INativeSuperToken.at(proxy.address)
+		const { ISuperToken } = sf.contracts
+		impl = await ISuperToken.at(proxy.address)
 
-		// store native and proxy methods in the same object
 		streamFromMint = { impl, proxy, address: proxy.address }
 	})
 
@@ -101,7 +99,9 @@ contract("StreamFromMint", accounts => {
 		)
 	})
 
-	console.log(
-		"STOP. If you think this is enough tests to go put this in prod, stop thinking that. Don't do what you're thinking about doing. Please."
-	)
+	it("STOP", async () => {
+		console.log(
+			"STOP. If you think this is enough tests to go put this in prod, stop thinking that. Don't do what you're thinking about doing. Please."
+		)
+	})
 })

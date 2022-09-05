@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: AGPLv3
 pragma solidity ^0.8.0;
 
-import {SuperTokenStorage} from "../utils/SuperTokenStorage.sol";
-import {UUPSProxy} from "../utils/UUPSProxy.sol";
+import {SuperTokenStorage} from "../base/SuperTokenStorage.sol";
+import {UUPSProxy} from "../base/UUPSProxy.sol";
 
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {ISuperToken} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperToken.sol";

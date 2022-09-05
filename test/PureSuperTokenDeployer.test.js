@@ -4,10 +4,9 @@ const {
 	builtTruffleContractLoader
 } = require("@superfluid-finance/ethereum-contracts/scripts/libs/common")
 const SuperfluidSDK = require("@superfluid-finance/js-sdk")
-const { fastForward } = require("./util")
-const NativeSuperTokenDeployer = artifacts.require("NativeSuperTokenDeployer")
+const PureSuperTokenDeployer = artifacts.require("PureSuperTokenDeployer")
 
-contract("NativeSuperTokenDeployer", accounts => {
+contract("PureSuperTokenDeployer", accounts => {
 	const errorHandler = error => {
 		if (error) throw error
 	}
@@ -17,7 +16,7 @@ contract("NativeSuperTokenDeployer", accounts => {
 	let superTokenFactoryAddress
 
 	// deployer contract
-	let nativeSuperTokenDeployer
+	let pureSuperTokenDeployer
 
 	const INIT_SUPPLY = toWad(1000000)
 
@@ -36,7 +35,6 @@ contract("NativeSuperTokenDeployer", accounts => {
 		sf = new SuperfluidSDK.Framework({
 			web3,
 			version: "test",
-			additionalContracts: ["INativeSuperToken"],
 			contractLoader: builtTruffleContractLoader
 		})
 
@@ -46,19 +44,19 @@ contract("NativeSuperTokenDeployer", accounts => {
 
 		superTokenFactoryAddress = await sf.host.getSuperTokenFactory.call()
 
-		nativeSuperTokenDeployer = await web3tx(
-			NativeSuperTokenDeployer.new,
+		pureSuperTokenDeployer = await web3tx(
+			PureSuperTokenDeployer.new,
 			"alice deploys new deployment contract"
 		)(superTokenFactoryAddress)
 	})
 
 	it("can deploy super token", async () => {
 		const tx = await web3tx(
-			nativeSuperTokenDeployer.deploySuperToken,
-			"alice deploys native super token"
+			pureSuperTokenDeployer.deploySuperToken,
+			"alice deploys pure super token"
 		)("Super Juicy Token", "SJT", alice, INIT_SUPPLY, { from: alice })
 		const address = tx.logs[0].args.newSuperToken
-		const superToken = await sf.contracts.INativeSuperToken.at(address)
+		const superToken = await sf.contracts.ISuperToken.at(address)
 
 		assert.equal(
 			(await superToken.balanceOf.call(alice)).toString(),
@@ -68,14 +66,14 @@ contract("NativeSuperTokenDeployer", accounts => {
 
 	it("can not deploy twice", async () => {
 		await web3tx(
-			nativeSuperTokenDeployer.deploySuperToken,
-			"alice deploys native super token"
+			pureSuperTokenDeployer.deploySuperToken,
+			"alice deploys pure super token"
 		)("Super Juicy Token", "SJT", alice, INIT_SUPPLY, { from: alice })
 
 		try {
 			await web3tx(
-				nativeSuperTokenDeployer.deploySuperToken,
-				"alice deploys native super token again"
+				pureSuperTokenDeployer.deploySuperToken,
+				"alice deploys pure super token again"
 			)("Super Juicy Token", "SJT", alice, "1", { from: alice })
 			throw null
 		} catch (error) {
@@ -85,13 +83,13 @@ contract("NativeSuperTokenDeployer", accounts => {
 
 	it("can deploy same name and symbol from different senders", async () => {
 		const tx0 = await web3tx(
-			nativeSuperTokenDeployer.deploySuperToken,
-			"alice deploys native super token"
+			pureSuperTokenDeployer.deploySuperToken,
+			"alice deploys pure super token"
 		)("Super Juicy Token", "SJT", alice, INIT_SUPPLY, { from: alice })
 
 		const tx1 = await web3tx(
-			nativeSuperTokenDeployer.deploySuperToken,
-			"bob deploys native super token"
+			pureSuperTokenDeployer.deploySuperToken,
+			"bob deploys pure super token"
 		)("Super Juicy Token", "SJT", alice, INIT_SUPPLY, { from: bob })
 
 		// this is kinda redundant since create2 throws on creating an existing
@@ -106,13 +104,13 @@ contract("NativeSuperTokenDeployer", accounts => {
 		// least 20 bytes long to expose a hash collision.
 
 		await web3tx(
-			nativeSuperTokenDeployer.deploySuperToken,
-			"alice deploys native super token"
+			pureSuperTokenDeployer.deploySuperToken,
+			"alice deploys pure super token"
 		)("Super Juicy Token", "SJT", alice, INIT_SUPPLY, { from: alice })
 
 		await web3tx(
-			nativeSuperTokenDeployer.deploySuperToken,
-			"alice deploys native super token"
+			pureSuperTokenDeployer.deploySuperToken,
+			"alice deploys pure super token"
 		)(
 			"Super Juicy Toke", // shift `n` to symbol
 			"nSJT",
@@ -124,8 +122,8 @@ contract("NativeSuperTokenDeployer", accounts => {
 
 	it("can call agreement with super token", async () => {
 		const tx = await web3tx(
-			nativeSuperTokenDeployer.deploySuperToken,
-			"alice deploys native super token"
+			pureSuperTokenDeployer.deploySuperToken,
+			"alice deploys pure super token"
 		)("Super Juicy Token", "SJT", alice, INIT_SUPPLY, { from: alice })
 		const address = tx.logs[0].args.newSuperToken
 

@@ -40,7 +40,6 @@ contract("CappedSuperToken", accounts => {
 		sf = new SuperfluidSDK.Framework({
 			web3,
 			version: "test",
-			additionalContracts: ["INativeSuperToken"],
 			contractLoader: builtTruffleContractLoader
 		})
 		await sf.initialize()
@@ -63,10 +62,9 @@ contract("CappedSuperToken", accounts => {
 		})
 
 		// get proxy methods from a template
-		const { INativeSuperToken } = sf.contracts
-		impl = await INativeSuperToken.at(proxy.address)
+		const { ISuperToken } = sf.contracts
+		impl = await ISuperToken.at(proxy.address)
 
-		// store native and proxy methods in the same object
 		cappedSuperToken = { impl, proxy, address: proxy.address }
 	})
 

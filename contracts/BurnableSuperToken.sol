@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import {SuperTokenBase} from "./base/SuperTokenBase.sol";
 
-/// @title Burnable Super Token
+/// @title Burnable Pure Super Token
 /// @author jtriley.eth
 /// @notice This does not perform checks when burning
 contract BurnableSuperToken is SuperTokenBase {

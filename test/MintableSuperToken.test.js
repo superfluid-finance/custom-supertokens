@@ -40,7 +40,6 @@ contract("MintableSuperToken", accounts => {
 		sf = new SuperfluidSDK.Framework({
 			web3,
 			version: "test",
-			additionalContracts: ["INativeSuperToken"],
 			contractLoader: builtTruffleContractLoader
 		})
 		await sf.initialize()
@@ -61,8 +60,8 @@ contract("MintableSuperToken", accounts => {
 		)("Super Juicy Token", "SJT", superTokenFactoryAddress)
 
 		// get impl functions from the framework
-		const { INativeSuperToken } = sf.contracts
-		impl = await INativeSuperToken.at(proxy.address)
+		const { ISuperToken } = sf.contracts
+		impl = await ISuperToken.at(proxy.address)
 
 		mintableSuperToken = { impl, proxy, address: proxy.address }
 	})

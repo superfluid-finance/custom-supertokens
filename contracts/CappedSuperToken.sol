@@ -5,7 +5,7 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 import {SuperTokenBase} from "./base/SuperTokenBase.sol";
 
-/// @title Mintable Super Token implementation with a maximum supply limit.
+/// @title Capped (maximum supply limit) Mintable Pure Super Token.
 /// @author jtriley.eth
 /// @notice Mint permission set in initializer, transferrable
 contract CappedSuperToken is SuperTokenBase, Ownable {
@@ -29,7 +29,6 @@ contract CappedSuperToken is SuperTokenBase, Ownable {
 		address factory,
 		uint256 _maxSupply
 	) external {
-		// SuperTokenBase._initialize(string,string)
 		_initialize(name, symbol, factory);
 		maxSupply = _maxSupply;
 	}
