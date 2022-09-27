@@ -34,19 +34,27 @@ In order to run a specific test, you can run `npx truffle test <testfile>`, for 
 
 ## Deployment
 
+First, make sure to have up to date binaries:
+
+```bash
+yarn build
+```
+
 In order to deploy an instance of a Custom Super Token, you can use the included truffe deploy script with the needed ENV vars set:
 
 ```bash
 CONTRACT=<contract_name> CTOR_ARGS=<args...> INIT_ARGS=<args...> npx truffle exec --network <network> scripts/deploy.js
 ```
 
-where `CTOR_ARGS` are the arguments provided to the constructor of the proxy contract (empty / not needed in most cases) and `INIT_ARGS` are the arguments provided to the `initialize` method.
+where `CTOR_ARGS` are the arguments provided to the constructor of the proxy contract (empty / not needed in most cases) and `INIT_ARGS` are the arguments provided to the `initialize` method (excluding the first argument `factory` which is added by the script).
 
 Example invocation for deploying an instance of `MintableSuperToken` with name "my token" and symbol "MTK" on goerli testnet:
 
 ```bash
 CONTRACT=MintableSuperToken INIT_ARGS="my token","MTK" npx truffle exec --network goerli scripts/deploy.js
 ```
+
+In order to figure out which `INIT_ARGS` are needed, check the contract source.
 
 In order to deploy to any network other than "development" (the default if none is specified), you need to provide a mnemonic and RPC provider URL via ENV vars (can be via `.env` file or cmdline).  
 E.g. for deployment to goerli, the ENV vars `GOERLI_MNEMONIC` and `GOERLI_PROVIDER_URL` need to be set and the account derived from that mnemonic needs to be funded with native coins.  

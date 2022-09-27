@@ -1,6 +1,6 @@
-const { web3tx } = require("@decentral.ee/web3-helpers")
-const { setWeb3Provider } = require("@decentral.ee/web3-helpers/src/config")
-const { factory: factoryAddrs } = require("./utils/constants")
+const { web3tx } = require("@decentral.ee/web3-helpers");
+const { setWeb3Provider } = require("@decentral.ee/web3-helpers/src/config");
+const { factory: factoryAddrs } = require("./utils/constants");
 
 /*
  * Truffle script for deploying a custom Super Token
@@ -10,7 +10,7 @@ const { factory: factoryAddrs } = require("./utils/constants")
  * ENV vars:
  * - CONTRACT: the name of the contract, e.g. "MintableSuperToken"
  * - CTOR_ARGS: comma-delimited arguments to the constructor of the token proxy contract
- * - INIT_ARGS: comma-delimited arguments to the initialize function of the token contract
+ * - INIT_ARGS: comma-delimited arguments (excluding factory) to the initialize function of the token contract
  * - FACTORY: address of the SuperTokenFactory, needed on dev networks
  *
  * Example use:
@@ -19,57 +19,57 @@ const { factory: factoryAddrs } = require("./utils/constants")
  * If used to deploy on a development network, you also need to set FACTORY to a Super Token Factory address.
  */
 module.exports = async function (callback) {
-	const contractName = process.env.CONTRACT
+    const contractName = process.env.CONTRACT;
 
-	const ctorArgsStr = process.env.CTOR_ARGS
-	const initArgsStr = process.env.INIT_ARGS
+    const ctorArgsStr = process.env.CTOR_ARGS;
+    const initArgsStr = process.env.INIT_ARGS;
 
-	const ctorArgs = ctorArgsStr
-		? ctorArgsStr.split(",").map(e => e.trim())
-		: []
-	const initArgs = initArgsStr
-		? initArgsStr.split(",").map(e => e.trim())
-		: []
+    const ctorArgs = ctorArgsStr
+        ? ctorArgsStr.split(",").map(e => e.trim())
+        : [];
+    const initArgs = initArgsStr
+        ? initArgsStr.split(",").map(e => e.trim())
+        : [];
 
-	try {
-		if (contractName === undefined) {
-			throw "ERR: ENV var CONTRACT not set"
-		}
+    try {
+        if (contractName === undefined) {
+            throw "ERR: ENV var CONTRACT not set";
+        }
 
-		// will throw if not found
-		const Contract = artifacts.require(contractName)
+        // will throw if not found
+        const Contract = artifacts.require(contractName);
 
-		console.log("contructor args:", ctorArgs)
-		console.log("initialize args:", initArgs)
+        console.log("contructor args:", ctorArgs);
+        console.log("initialize args:", initArgs);
 
-		setWeb3Provider(web3.currentProvider)
+        setWeb3Provider(web3.currentProvider);
 
-		const chainId = await web3.eth.net.getId()
-		const factoryAddr = process.env.FACTORY || factoryAddrs[chainId]
-		if (factoryAddr === undefined) {
-			throw "ERR: No SuperTokenFactory address provided of found for the connected chain"
-		}
+        const chainId = await web3.eth.net.getId();
+        const factoryAddr = process.env.FACTORY || factoryAddrs[chainId];
+        if (factoryAddr === undefined) {
+            throw "ERR: No SuperTokenFactory address provided of found for the connected chain";
+        }
 
-		console.log("SuperTokenFactory address", factoryAddr)
+        console.log("SuperTokenFactory address", factoryAddr);
 
-		const proxy = await web3tx(
-			Contract.new,
-			"Deploy Proxy contract"
-		)(...ctorArgs)
+        const proxy = await web3tx(
+            Contract.new,
+            "Deploy Proxy contract"
+        )(...ctorArgs);
 
-		console.log(`Proxy deployed at: ${proxy.address}`)
+        console.log(`Proxy deployed at: ${proxy.address}`);
 
-		await web3tx(proxy.initialize, "Initialize Token contract")(
-			...initArgs,
-			factoryAddr
-		)
+        await web3tx(proxy.initialize, "Initialize Token contract")(
+            factoryAddr,
+            ...initArgs
+        );
 
-		console.log(
-			"All done, token deployed and initialized at:",
-			proxy.address
-		)
-		callback()
-	} catch (error) {
-		callback(error)
-	}
-}
+        console.log(
+            "All done, token deployed and initialized at:",
+            proxy.address
+        );
+        callback();
+    } catch (error) {
+        callback(error);
+    }
+};
