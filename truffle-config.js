@@ -31,7 +31,19 @@ module.exports = {
 					url: process.env.MATIC_PROVIDER_URL
 				}),
 			network_id: 137,
-			gasPrice: 10e10,
+			gasPrice: 50e9, // 50 gwei
+			skipDryRun: false
+		},
+
+		// Polygon mumbai testnet
+		mumbai: {
+			provider: () =>
+				new HDWalletProvider({
+					mnemonic: process.env.MUMBAI_MNEMONIC,
+					url: process.env.MUMBAI_PROVIDER_URL
+				}),
+			network_id: 80001,
+			gasPrice: 50e9, // 50 gwei
 			skipDryRun: false
 		},
 
