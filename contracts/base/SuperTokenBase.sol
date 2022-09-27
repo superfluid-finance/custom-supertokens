@@ -15,10 +15,10 @@ import {ISuperTokenFactory} from "@superfluid-finance/ethereum-contracts/contrac
 abstract contract SuperTokenBase is SuperTokenStorage, UUPSProxy {
 
 	/// @dev Upgrades the super token with the factory, then initializes.
+	/// @param factory super token factory for initialization
 	/// @param name super token name
 	/// @param symbol super token symbol
-	/// @param factory super token factory for initialization
-	function _initialize(string memory name, string memory symbol, address factory) internal {
+	function _initialize(address factory, string memory name, string memory symbol) internal {
 		ISuperTokenFactory(factory).initializeCustomSuperToken(address(this));
 		ISuperToken(address(this)).initialize(IERC20(address(0)), 18, name, symbol);
 	}

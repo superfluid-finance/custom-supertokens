@@ -19,17 +19,17 @@ contract CappedSuperToken is SuperTokenBase, Ownable {
 	uint256 public maxSupply;
 
 	/// @notice Initializes the super token only once IF it does not exceed supply cap
+	/// @param factory Super Token factory for initialization
 	/// @param name Name of Super Token
 	/// @param symbol Symbol of Super Token
-	/// @param factory Super Token factory for initialization
 	/// @param _maxSupply Immutable max supply
 	function initialize(
+		address factory,
 		string memory name,
 		string memory symbol,
-		address factory,
 		uint256 _maxSupply
 	) external {
-		_initialize(name, symbol, factory);
+		_initialize(factory, name, symbol);
 		maxSupply = _maxSupply;
 	}
 

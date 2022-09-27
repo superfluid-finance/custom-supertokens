@@ -3,11 +3,13 @@ const HDWalletProvider = require("@truffle/hdwallet-provider")
 
 module.exports = {
 	networks: {
-		ganache: {
+		development: {
 			host: "127.0.0.1",
-			network_id: "*",
-			port: process.env.GANACHE_PORT || 8545
+			port: 9545,
+			network_id: "*"
 		},
+
+		// goerli testnet
 		goerli: {
 			provider: () =>
 				new HDWalletProvider(
@@ -20,14 +22,27 @@ module.exports = {
 			timeoutBlocks: 50, // # of blocks before a deployment times out  (minimum/default: 50)
 			skipDryRun: false // Skip dry run before migrations? (default: false for public nets )
 		},
+
+		// Polygon PoS mainnet
 		matic: {
 			provider: () =>
-				new HDWalletProvider(
-					process.env.MATIC_MNEMONIC,
-					process.env.MATIC_PROVIDER_URL
-				),
+				new HDWalletProvider({
+					mnemonic: process.env.MATIC_MNEMONIC,
+					url: process.env.MATIC_PROVIDER_URL
+				}),
 			network_id: 137,
 			gasPrice: 10e10,
+			skipDryRun: false
+		},
+
+		// can be used for any network, just set ANY_PROVIDER_URL accordingly
+		any: {
+			provider: () =>
+				new HDWalletProvider(
+					process.env.ANY_MNEMONIC,
+					process.env.ANY_PROVIDER_URL
+				),
+			network_id: "*",
 			skipDryRun: false
 		}
 	},

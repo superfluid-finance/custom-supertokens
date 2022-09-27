@@ -46,12 +46,12 @@ contract SuperTokenPermit is SuperTokenBase, AccessControl {
 	/// @param name Name of Super Token
 	/// @param symbol Symbol of Super Token
 	function initialize(
+		address factory,
 		string memory name,
 		string memory symbol,
-		address factory,
         address forwarder
 	) external {
-		_initialize(name, symbol, factory);
+		_initialize(factory, name, symbol);
         _forwarder = IForwarder(forwarder);
 	}
 

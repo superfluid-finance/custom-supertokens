@@ -21,21 +21,21 @@ contract BurnMintSuperToken is SuperTokenBase, AccessControl {
 
 	/// @notice Initializer, used AFTER factory upgrade
 	/// @dev We MUST mint here, there is no other way to mint tokens
+	/// @param factory Super Token factory for initialization
 	/// @param name Name of Super Token
 	/// @param symbol Symbol of Super Token
-	/// @param factory Super Token factory for initialization
 	/// @param initialSupply Initial token supply to pre-mint
 	/// @param receiver Receiver of pre-mint
 	/// @param userData Arbitrary user data for pre-mint
 	function initialize(
+		address factory,
 		string memory name,
 		string memory symbol,
-		address factory,
 		uint256 initialSupply,
 		address receiver,
 		bytes memory userData
 	) external {
-		_initialize(name, symbol, factory);
+		_initialize(factory, name, symbol);
 		_mint(receiver, initialSupply, userData);
 	}
 

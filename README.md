@@ -16,7 +16,7 @@ While it is also possible to implement custom Super Tokens wrapping underlying E
 
 ## Setup
 
-To set up the repo for development, clone this repo and install dependencies.
+To set up the repo for development, clone this repo and install dependencies:
 
 ```bash
 git clone https://github.com/superfluid-finance/custom-supertokens
@@ -24,14 +24,40 @@ cd custom-supertokens
 yarn install
 ```
 
+In order to run all **tests**:
+
+```bash
+yarn test
+```
+
+In order to run a specific test, you can run `npx truffle test <testfile>`, for example `npx truffle test test/MaticBridgedSuperToken.test.js`.
+
+## Deployment
+
+In order to deploy an instance of a Custom Super Token, you can use the included truffe deploy script with the needed ENV vars set:
+
+```bash
+CONTRACT=<contract_name> CTOR_ARGS=<args...> INIT_ARGS=<args...> npx truffle exec --network <network> scripts/deploy.js
+```
+
+where `CTOR_ARGS` are the arguments provided to the constructor of the proxy contract (empty / not needed in most cases) and `INIT_ARGS` are the arguments provided to the `initialize` method.
+
+Example invocation for deploying an instance of `MintableSuperToken` with name "my token" and symbol "MTK" on goerli testnet:
+
+```bash
+CONTRACT=MintableSuperToken INIT_ARGS="my token","MTK" npx truffle exec --network goerli scripts/deploy.js
+```
+
+In order to deploy to any network other than "development" (the default if none is specified), you need to provide a mnemonic and RPC provider URL via ENV vars (can be via `.env` file or cmdline).  
+E.g. for deployment to goerli, the ENV vars `GOERLI_MNEMONIC` and `GOERLI_PROVIDER_URL` need to be set and the account derived from that mnemonic needs to be funded with native coins.  
+Check `truffle-config.js` for pre-configured networks. If what you need is missing, you can add it or use the wildcard network `any`.
+
 ---
 
-## NOTICE
-
-These contracts, while being tested internally, HAVE NOT been audited or
-externally reviewed. Please use at your own risk.
-
 ## Important Notes
+
+**These contracts, while being tested internally, HAVE NOT been audited or
+externally reviewed. Please use at your own risk.**
 
 `SuperTokenBase` (alternatively the more minimal `SuperTokenStorage`) MUST be inherited FIRST in the final
 contract, this is to ensure proper storage layout in accordance with Soldity contract inheritance rules.  
@@ -90,8 +116,6 @@ This is functionally similar to Superfluid's `UUPSProxy.sol` contract, with a
 few minor gas optimizations.
 For more details, see [EIP-1822](https://eips.ethereum.org/EIPS/eip-1822).
 
----
-
 ## Custom Token Contracts
 
 These are some example custom super tokens, both to demonstrate usage of the
@@ -130,3 +154,5 @@ from Open Zeppelin's Ownable contract. No tokens are minted on initialization.
 
 The PureSuperTokenDeployer is a _factory_ contract that deploys, upgrades, and
 initializes the PureSuperToken in a single transaction. This makes it easy to deploy super tokens from a UI.
+
+---

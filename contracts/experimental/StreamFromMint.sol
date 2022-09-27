@@ -30,15 +30,15 @@ contract StreamFromMint is SuperTokenBase {
 	MintStream internal _mintStream;
 
 	function initialize(
+		address factory,
 		string memory name,
 		string memory symbol,
-		address factory,
 		IConstantFlowAgreementV1 cfa,
 		address receiver,
 		int96 mintFlowRate
 	) external {
 		_cfa = cfa;
-		_initialize(name, symbol, factory);
+		_initialize(factory, name, symbol);
 		ISuperToken(address(this)).selfMint(
 			address(this),
 			uint256(type(int256).max),

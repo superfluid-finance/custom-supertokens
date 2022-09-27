@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPLv3
 pragma solidity ^0.8.0;
 
-import {PureSuperToken} from "./PureSuperToken.sol";
+import {PureSuperToken} from "../PureSuperToken.sol";
 
 /// @title Pure Super Token deployment 'Factory'
 /// @author jtriley.eth
@@ -41,9 +41,9 @@ contract PureSuperTokenDeployer {
         // PureSuperToken has a payable fallback in `Proxy`
         // Proxy -> UUPSProxy -> SuperTokenBase -> PureSuperToken
         PureSuperToken(payable(newSuperToken)).initialize(
+            _factory,
             name,
             symbol,
-            _factory,
             receiver,
             initialSupply
         );
