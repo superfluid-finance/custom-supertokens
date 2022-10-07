@@ -57,9 +57,9 @@ contract("BurnableSuperToken", accounts => {
 			proxy.initialize,
 			`BurnableSuperToken.initialize by alice with supply of ${INIT_SUPPLY}`
 		)(
+			superTokenFactoryAddress,
 			"Super Juicy Token",
 			"SJT",
-			superTokenFactoryAddress,
 			INIT_SUPPLY,
 			alice,
 			"0x"
@@ -79,9 +79,9 @@ contract("BurnableSuperToken", accounts => {
 				burnableSuperToken.proxy.initialize,
 				"alice tries to initialize a second time"
 			)(
+				superTokenFactoryAddress,
 				"Not Super Juicy Token",
 				"NSJT",
-				superTokenFactoryAddress,
 				INIT_SUPPLY,
 				alice
 			)

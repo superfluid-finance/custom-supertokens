@@ -57,9 +57,9 @@ contract("MulitMintToken", accounts => {
 			proxy.initialize,
 			"MultiMintToken.initialize by alice with 100 token mint every day"
 		)(
+			superTokenFactoryAddress,
 			"Super Juicy Token",
 			"SJT",
-			superTokenFactoryAddress,
 			ida.address,
 			alice, // share issuer
 			86400, // mint interval

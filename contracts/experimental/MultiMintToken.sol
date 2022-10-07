@@ -38,9 +38,9 @@ contract MultiMintToken is SuperTokenBase {
     uint32 internal constant _indexId = 0;
 
 	function initialize(
+		address factory,
 		string memory _name,
 		string memory _symbol,
-		address factory,
 		address _ida,
         address _shareIssuer,
 		uint256 _mintInterval,
@@ -48,7 +48,7 @@ contract MultiMintToken is SuperTokenBase {
 	) external {
 		// underscored parameters to avoid naming collision with mintInterval and ida
 		// SuperTokenBase._initialize(string,string)
-		_initialize(_name, _symbol, factory);
+		_initialize(factory, _name, _symbol);
 		ida = _ida;
         shareIssuer = _shareIssuer;
 		mintInterval = _mintInterval;

@@ -57,7 +57,7 @@ contract("CappedSuperToken", accounts => {
 		await web3tx(
 			proxy.initialize,
 			"CappedSuperToken.initialize by alice max supply of 1_000_000"
-		)("Super Juicy Token", "SJT", superTokenFactoryAddress, MAX_SUPPLY, {
+		)(superTokenFactoryAddress, "Super Juicy Token", "SJT", MAX_SUPPLY, {
 			from: alice
 		})
 
@@ -74,9 +74,9 @@ contract("CappedSuperToken", accounts => {
 				cappedSuperToken.proxy.initialize,
 				"alice tries to initializes a second time"
 			)(
+				superTokenFactoryAddress,
 				"Not Super Juicy Token",
 				"NSJT",
-				superTokenFactoryAddress,
 				MAX_SUPPLY,
 				alice
 			)
