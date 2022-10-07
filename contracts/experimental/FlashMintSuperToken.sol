@@ -22,13 +22,13 @@ contract FlashMintSuperToken is SuperTokenBase, IERC3156FlashLender {
 		keccak256("ERC3156FlashBorrower.onFlashLoan");
 
 	function initialize(
+		address factory,
 		string memory name,
 		string memory symbol,
-		address factory,
 		address receiver,
 		uint256 initialSupply
 	) external {
-		_initialize(name, symbol, factory);
+		_initialize(factory, name, symbol);
 		_mint(receiver, initialSupply);
 	}
 

@@ -57,7 +57,7 @@ contract("MintableSuperToken", accounts => {
 		await web3tx(
 			proxy.initialize,
 			"MintableSuperToken.initialize by alice with supply of 1_000_000"
-		)("Super Juicy Token", "SJT", superTokenFactoryAddress)
+		)(superTokenFactoryAddress, "Super Juicy Token", "SJT")
 
 		// get impl functions from the framework
 		const { ISuperToken } = sf.contracts
@@ -69,6 +69,7 @@ contract("MintableSuperToken", accounts => {
 	it("alice cannot initialize twice", async () => {
 		try {
 			await web3tx(
+				superTokenFactoryAddress,
 				mintableSuperToken.proxy.initialize,
 				"alice tries to initializes a second time"
 			)("Not Super Juicy Token", "NSJT")

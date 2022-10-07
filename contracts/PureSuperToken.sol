@@ -9,19 +9,19 @@ import {SuperTokenBase} from "./base/SuperTokenBase.sol";
 contract PureSuperToken is SuperTokenBase {
 
 	/// @dev Upgrades the super token with the factory, then initializes.
+    /// @param factory super token factory for initialization
 	/// @param name super token name
 	/// @param symbol super token symbol
-	/// @param factory super token factory for initialization
 	/// @param receiver Receiver of pre-mint
 	/// @param initialSupply Initial token supply to pre-mint
     function initialize(
+        address factory,
         string memory name,
         string memory symbol,
-        address factory,
         address receiver,
         uint256 initialSupply
     ) external {
-        _initialize(name, symbol, factory);
+        _initialize(factory, name, symbol);
         _mint(receiver, initialSupply, "");
     }
 

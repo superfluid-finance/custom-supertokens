@@ -45,9 +45,9 @@ contract("MaticBridgedSuperToken", accounts => {
 		)(chainMgr)
 
 		await web3tx(proxy.initialize, "MaticBridgedSuperToken.initialize")(
+			superTokenFactoryAddress,
 			"Matic Bridged Token",
-			"MBT",
-			superTokenFactoryAddress
+			"MBT"
 		)
 
 		// get Superfluid functions from the framework
@@ -61,9 +61,9 @@ contract("MaticBridgedSuperToken", accounts => {
 	it("#1 can initialize only once", async () => {
 		await expectRevert.unspecified(
 			token.proxy.initialize(
+				superTokenFactoryAddress,
 				"Hacked Matic Bridged Token",
-				"HMBT",
-				superTokenFactoryAddress
+				"HMBT"
 			)
 		)
 	})

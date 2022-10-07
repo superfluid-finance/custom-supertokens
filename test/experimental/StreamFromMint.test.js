@@ -57,9 +57,9 @@ contract("StreamFromMint", accounts => {
 			proxy.initialize,
 			"StreamFromMint.initialize by alice max supply of 1_000_000"
 		)(
+			superTokenFactoryAddress,
 			"Super Juicy Token",
 			"SJT",
-			superTokenFactoryAddress,
 			cfa.address,
 			alice,
 			INIT_MINT_FLOW_RATE,
