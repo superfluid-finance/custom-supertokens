@@ -83,10 +83,7 @@ contract("MaticBridgedSuperToken", accounts => {
 			{ from: chainMgr }
 		)
 
-		await expectRevert(
-			token.proxy.withdraw(AMOUNT_1),
-			"SuperfluidToken: burn amount exceeds balance"
-		)
+		await expectRevert.unspecified(token.proxy.withdraw(AMOUNT_1))
 
 		await token.proxy.withdraw(AMOUNT_1, { from: bob })
 
