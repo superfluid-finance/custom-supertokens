@@ -60,6 +60,26 @@ In order to deploy to any network other than "development" (the default if none 
 E.g. for deployment to goerli, the ENV vars `GOERLI_MNEMONIC` and `GOERLI_PROVIDER_URL` need to be set and the account derived from that mnemonic needs to be funded with native coins.  
 Check `truffle-config.js` for pre-configured networks. If what you need is missing, you can add it or use the wildcard network `any`.
 
+### Verification
+
+You can verify contracts deployed to public networks on etherscan-compatible explorers.
+
+First, you have to provide an API key for the explorer to verify with. See `.env.template` for the relevant ENV vars.
+
+With the API key set, you can trigger verification like this:
+
+```bash
+npx truffle run --network <network> verify <contract_name>@<address> --custom-proxy <contract_name>
+```
+
+Example invocation for verifying an instance of `MintableSuperToken` deployed at `0x5A54F0a964AbBbD68f395E8Cc1Ba50f433d443e2` on mumbai testnet:
+
+```bash
+npx truffle run --network mumbai verify MintableSuperToken@0x5A54F0a964AbBbD68f395E8Cc1Ba50f433d443e2 --custom-proxy MintableSuperToken
+```
+
+[Explorer link](https://mumbai.polygonscan.com/address/0x5A54F0a964AbBbD68f395E8Cc1Ba50f433d443e2#code) of the verified contract.
+
 ---
 
 ## Important Notes
