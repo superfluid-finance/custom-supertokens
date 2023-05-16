@@ -34,7 +34,7 @@ module.exports = {
 		mumbai: {
 			provider: () =>
 				new HDWalletProvider({
-					mnemonic: process.env.MUMBAI_MNEMONIC,
+					privateKeys: [`${process.env.MUMBAI_KEY}`],
 					url: process.env.MUMBAI_PROVIDER_URL
 				}),
 			network_id: 80001,
