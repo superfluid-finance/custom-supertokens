@@ -78,7 +78,14 @@ Example invocation for verifying an instance of `MintableSuperToken` deployed at
 npx truffle run --network mumbai verify MintableSuperToken@0x5A54F0a964AbBbD68f395E8Cc1Ba50f433d443e2 --custom-proxy MintableSuperToken
 ```
 
-[Explorer link](https://mumbai.polygonscan.com/address/0x5A54F0a964AbBbD68f395E8Cc1Ba50f433d443e2#code) of the verified contract.
+Note that this may sometimes appear to fail according to the console log, despite having succeeded.
+In order to check that, head over to the explorer you verified on and navigate to the contract you're verifying. For the example provided, that would be:
+https://mumbai.polygonscan.com/address/0x5A54F0a964AbBbD68f395E8Cc1Ba50f433d443e2#code
+
+If verification succeeded (contract source code visible on that page), you may still need to manually trigger the proxy detection in order to enable the full SuperToken interface in the Explorer (and not just the proxy interface). In order to achieve that, click "More options", then "Is this a proxy?", in the next page "Verify", in the next popup "Save".
+![image](https://user-images.githubusercontent.com/5479136/228034548-552044dc-5417-44ad-ae95-144e26c99c5e.png)
+
+After doing that and heading back to the contract page, you should get additional tabs "Read as Proxy" and "Write as Proxy" providing the full SuperToken interface.
 
 ---
 
