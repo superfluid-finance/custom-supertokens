@@ -7,8 +7,6 @@ import { ISuperfluid } from "@superfluid-finance/ethereum-contracts/contracts/in
 import { IConstantOutflowNFT } from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/IConstantOutflowNFT.sol";
 import { IConstantInflowNFT } from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/IConstantInflowNFT.sol";
 
-import { IConnextBridgedToken } from "../interfaces/IConnextBridgedToken.sol";
-
 interface IMintBurn {
   function mint(address to, uint256 amount) external;
   function burn(address from, uint256 amount) external;

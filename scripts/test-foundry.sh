@@ -19,7 +19,6 @@ function test_network() {
 	# get current metadata
 
 	host=$(echo "$metadata" | jq -r '.[] | select(.name == "'$network'").contractsV1.host')
-	seth=$(echo "$metadata" | jq -r '.[] | select(.name == "'$network'").nativeTokenWrapper')
 
 	# Print the host address
 	echo "Host: $host"
