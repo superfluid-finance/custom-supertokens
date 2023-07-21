@@ -191,3 +191,9 @@ The PureSuperTokenDeployer is a _factory_ contract that deploys, upgrades, and
 initializes the PureSuperToken in a single transaction. This makes it easy to deploy super tokens from a UI.
 
 ---
+
+### alternative-logic
+
+This directory contains modified versions of the actual SuperToken logic.  
+Unlike the other contracts, here the added/changed functionality isn't applied to the proxy itself, but to an alternative version of the SuperToken logic contract.
+This allows existing SuperTokens to be upgraded to non-canonical SuperToken logic.
