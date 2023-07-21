@@ -6,6 +6,8 @@
 	"scripts": {
 		"build": "truffle compile --all",
 		"test": "truffle test",
+		"test:foundry": "scripts/test-foundry.sh",
+		"test:foundry:fraction-on-op": "TOKEN=0xbd80cfa9d93a87d1bb895f810ea348e496611cd4 scripts/test-foundry.sh optimism-mainnet",
 		"prepare": "husky install"
 	},
 	"dependencies": {
