@@ -73,6 +73,7 @@ contract BridgedSuperToken is SuperToken, IMintBurn {
         //return keccak256("org.superfluid-finance.contracts.BridgedSuperToken.implementation");
     }
 
+    /// IMPORTANT: this function needs to stay in sync with the canonical version of SuperToken
     function updateCode(address newAddress) external override {
         if (msg.sender != UPGRADE_ADMIN) revert NO_PERMISSION();
         // implementation in UUPSProxiable
