@@ -10,7 +10,7 @@
 	},
 	"dependencies": {
 		"@openzeppelin/contracts": "^4.7.3",
-		"@superfluid-finance/ethereum-contracts": "^1.4.3",
+		"@superfluid-finance/ethereum-contracts": "^1.7.1",
 		"truffle-plugin-verify": "^0.6.0"
 	},
 	"devDependencies": {

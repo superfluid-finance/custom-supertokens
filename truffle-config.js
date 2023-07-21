@@ -59,7 +59,13 @@ module.exports = {
 	// Configure your compilers
 	compilers: {
 		solc: {
-			version: "0.8.14"
+			version: "0.8.19",
+			// See the solidity docs for advice about optimization and evmVersion
+			optimizer: {
+				enabled: true,
+				runs: 200
+			}
+			// evmVersion: use default
 		}
 	},
 	api_keys: {
