@@ -920,6 +920,11 @@
     auto-bind "^4.0.0"
     node-fetch "^2.6.7"
 
+"@superfluid-finance/metadata@^1.1.10":
+  version "1.1.10"
+  resolved "https://registry.yarnpkg.com/@superfluid-finance/metadata/-/metadata-1.1.10.tgz#980991d60066f21646d29eb01a9080c7fae1493d"
+  integrity sha512-IbcpfB/pOwjl/Vam0d1WXNJaeA0bUW/CkQEZlEhUpL+DQh01d6TnxneEjw3VsT9alqamtycKoi6+2uPHAzyvFA==
+
 "@superfluid-finance/metadata@git+https://github.com/superfluid-finance/metadata.git":
   version "1.1.0"
   resolved "git+https://github.com/superfluid-finance/metadata.git#680a8020da870e28853182de5ae7f297992ac498"

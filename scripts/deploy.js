@@ -1,6 +1,6 @@
 const { web3tx } = require("@decentral.ee/web3-helpers")
 const { setWeb3Provider } = require("@decentral.ee/web3-helpers/src/config")
-const { factory: factoryAddrs } = require("./utils/constants")
+const sfMeta = require("@superfluid-finance/metadata")
 
 /*
  * Truffle script for deploying a custom Super Token
@@ -45,7 +45,11 @@ module.exports = async function (callback) {
 		setWeb3Provider(web3.currentProvider)
 
 		const chainId = await web3.eth.net.getId()
-		const factoryAddr = process.env.FACTORY || factoryAddrs[chainId]
+
+		const network = sfMeta.getNetworkByChainId(chainId)
+
+		const factoryAddr =
+			process.env.FACTORY || network.contractsV1.superTokenFactory
 		if (factoryAddr === undefined) {
 			throw "ERR: No SuperTokenFactory address provided of found for the connected chain"
 		}

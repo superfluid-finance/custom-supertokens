@@ -192,8 +192,25 @@ initializes the PureSuperToken in a single transaction. This makes it easy to de
 
 ---
 
-### alternative-logic
+## alternative-logic
 
 This directory contains modified versions of the actual SuperToken logic.  
 Unlike the other contracts, here the added/changed functionality isn't applied to the proxy itself, but to an alternative version of the SuperToken logic contract.
 This allows existing SuperTokens to be upgraded to non-canonical SuperToken logic.
+
+### BridgedSuperToken
+
+Gives mint and burn permisson to a single account `BRIDGE_ADDR`.  
+Hands upgradability permission to a hardcoded account `UPGRADE_ADMIN`.
+
+Fork testing using FRACTION on Optimism:
+
+```
+yarn test:foundry:fraction-on-op
+```
+
+Deploy (to Optimism Goerli, using the deployer account as UPGRADE_ADMIN):
+
+```
+npx truffle exec --network opgoerli scripts/deploy-bridgedsupertoken.js
+```
