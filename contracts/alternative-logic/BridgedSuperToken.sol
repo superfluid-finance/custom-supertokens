@@ -56,22 +56,7 @@ contract BridgedSuperToken is SuperToken, IMintBurn {
         //SuperfluidToken._mint(to, amount);
     }
 
-// this used to was required, but seems nomore (?)
-/*
-    function setDetails(string calldata name_, string calldata symbol_) external override {
-        _name = name_;
-        _symbol = symbol_;
-    }
-*/
-
     // Make the token self-sovereign
-
-    function proxiableUUID() public pure override returns (bytes32) {
-        return keccak256("org.superfluid-finance.contracts.SuperToken.implementation");
-
-        // TODO: would be better to have a distinct uuid, but then we can't update to it. Change it after update?
-        //return keccak256("org.superfluid-finance.contracts.BridgedSuperToken.implementation");
-    }
 
     /// IMPORTANT: this function needs to stay in sync with the canonical version of SuperToken
     function updateCode(address newAddress) external override {
