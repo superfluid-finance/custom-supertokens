@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPLv3
 pragma solidity ^0.8.0;
 
-import {SuperTokenStorage} from "../base/SuperTokenStorage.sol";
+import {CustomSuperTokenBase} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/CustomSuperTokenBase.sol";
 import {UUPSProxy} from "../base/UUPSProxy.sol";
 import {
     ISuperToken,
@@ -12,8 +12,8 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 /// @title FOT (Fee on Transfer) Token
 /// trivial implementation using a fixed fee amount per tx, added to the actual transfer amount.
-/// @notice SuperTokenStorage MUST be the first inherited contract, otherwise the storage layout may get corrupted
-contract FOTTokenProxy is SuperTokenStorage, UUPSProxy, Ownable {
+/// @notice CustomSuperTokenBase MUST be the first inherited contract, otherwise the storage layout may get corrupted
+contract FOTTokenProxy is CustomSuperTokenBase, UUPSProxy, Ownable {
     uint256 public feePerTx;
     address public feeRecipient;
 
@@ -56,3 +56,5 @@ contract FOTTokenProxy is SuperTokenStorage, UUPSProxy, Ownable {
         return transferFrom(msg.sender, recipient, amount);
     }
 }
+
+// TODO: create interfaces IFOTTokenCustom, IFOTToken - see https://github.com/superfluid-finance/protocol-monorepo/blob/dev/packages/ethereum-contracts/contracts/interfaces/tokens/ISETH.sol
