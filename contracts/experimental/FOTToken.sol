@@ -40,7 +40,7 @@ contract FOTTokenProxy is CustomSuperTokenBase, UUPSProxy, Ownable, IFOTTokenCus
         string memory symbol
     ) external {
         ISuperTokenFactory(factory).initializeCustomSuperToken(address(this));
-		ISuperToken(address(this)).initialize(IERC20(address(0)), 18, name, symbol);
+        ISuperToken(address(this)).initialize(IERC20(address(0)), 18, name, symbol);
     }
 
     // ======= IFOTTokenCustom =======
