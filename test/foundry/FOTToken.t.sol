@@ -2,18 +2,13 @@
 pragma solidity 0.8.19;
 
 import "forge-std/Test.sol";
-import {
-    FOTTokenProxy,
-    ISuperToken
-} from "../../contracts/experimental/FOTToken.sol";
-import {ISuperfluid} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
-import {
-    SuperfluidFrameworkDeployer
-} from "@superfluid-finance/ethereum-contracts/contracts/utils/SuperfluidFrameworkDeployer.sol";
-import {ERC1820RegistryCompiled} from "@superfluid-finance/ethereum-contracts/contracts/libs/ERC1820RegistryCompiled.sol";
+import { FOTTokenProxy, IFOTToken } from "../../contracts/experimental/FOTToken.sol";
+import { ISuperfluid } from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
+import { SuperfluidFrameworkDeployer } from "@superfluid-finance/ethereum-contracts/contracts/utils/SuperfluidFrameworkDeployer.sol";
+import { ERC1820RegistryCompiled } from "@superfluid-finance/ethereum-contracts/contracts/libs/ERC1820RegistryCompiled.sol";
 
 contract FOTTokenTest is Test {
-    ISuperToken public fotToken;
+    IFOTToken public fotToken;
     SuperfluidFrameworkDeployer.Framework sf;
     uint256 public txFee = 1e16;
 
@@ -34,7 +29,7 @@ contract FOTTokenTest is Test {
         vm.startPrank(admin);
         FOTTokenProxy fotTokenProxy = new FOTTokenProxy(txFee, txFeeRecipient);
         fotTokenProxy.initialize(sf.superTokenFactory, "FOTToken", "FOT");
-        fotToken = ISuperToken(address(fotTokenProxy));
+        fotToken = IFOTToken(address(fotTokenProxy));
     }
 
     function testTransfer() public {
@@ -84,10 +79,10 @@ contract FOTTokenTest is Test {
         vm.startPrank(dan);
         vm.expectRevert("Ownable: caller is not the owner"); // dan isn't the owner
         // casting to payable needed because the proxy contains a payable fallback function
-        FOTTokenProxy(payable(address(fotToken))).setFeeConfig(newTxFee, dan);
+        fotToken.setFeeConfig(newTxFee, dan);
 
         vm.startPrank(admin);
-        FOTTokenProxy(payable(address(fotToken))).setFeeConfig(newTxFee, dan);
+        fotToken.setFeeConfig(newTxFee, dan);
 
         deal(address(fotToken), alice, 100 ether);
 
