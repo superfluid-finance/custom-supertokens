@@ -14,12 +14,8 @@ import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 interface IFOTTokenCustom {
     // admin interface
     function setFeeConfig(uint256 _feePerTx, address _feeRecipient) external /*onlyOwner*/;
-}
 
-// Methods included in ISuperToken, but intercepted by the proxy in order to change its behaviour.
-// This interface shall be inherited only by the proxy contract.
-interface IFOTTokenIntercepted {
-    // subset of IERC20 intercepted in the proxy in order to add a fee
+    // subset of ISuperToken/IERC20 intercepted in the proxy in order to add a fee
     function transferFrom(address holder, address recipient, uint256 amount) external returns (bool);
     function transfer(address recipient, uint256 amount) external returns (bool);
 }
@@ -27,7 +23,7 @@ interface IFOTTokenIntercepted {
 /// @title FOT (Fee on Transfer) Token
 /// Simple implementation of a Pure SuperToken taking a constant fee for every transfer operation.
 /// @notice CustomSuperTokenBase MUST be the first inherited contract, otherwise the storage layout breaks.
-contract FOTTokenProxy is CustomSuperTokenBase, UUPSProxy, Ownable, IFOTTokenCustom, IFOTTokenIntercepted {
+contract FOTTokenProxy is CustomSuperTokenBase, UUPSProxy, Ownable, IFOTTokenCustom {
     uint256 public feePerTx; // amount detracted as fee per tx
     address public feeRecipient; // receiver of the fee
 
@@ -55,8 +51,6 @@ contract FOTTokenProxy is CustomSuperTokenBase, UUPSProxy, Ownable, IFOTTokenCus
         emit FeeConfigSet(_feePerTx, _feeRecipient);
     }
 
-    // ======= IFOTTokenIntercepted =======
-
     function transferFrom(address holder, address recipient, uint256 amount)
         external override returns (bool)
     {
@@ -83,4 +77,8 @@ contract FOTTokenProxy is CustomSuperTokenBase, UUPSProxy, Ownable, IFOTTokenCus
     }
 }
 
-interface IFOTToken is ISuperToken, IFOTTokenCustom {}
+interface IFOTToken is ISuperToken, IFOTTokenCustom {
+    // we need to explicitly tell the compiler about the methods present in both base interfaces
+    function transferFrom(address holder, address recipient, uint256 amount) external override(ISuperToken, IFOTTokenCustom) returns (bool);
+    function transfer(address recipient, uint256 amount) external override(ISuperToken, IFOTTokenCustom) returns (bool);
+}
