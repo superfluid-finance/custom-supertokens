@@ -71,7 +71,6 @@ contract FOTTokenProxy is CustomSuperTokenBase, UUPSProxy, Ownable, IFOTTokenCus
         return true;
     }
 
-
     // ======= Internal =======
 
     function _transferFrom(address holder, address recipient, uint256 amount) internal {
