@@ -10,14 +10,14 @@ import {
 } from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 
-// Custom methods of this token, to be inherited from by both the proxy and interface.
+// Custom methods of this token
 interface IFOTTokenCustom {
     // admin interface
     function setFeeConfig(uint256 _feePerTx, address _feeRecipient) external /*onlyOwner*/;
 }
 
 // Methods included in ISuperToken, but intercepted by the proxy in order to change its behaviour.
-// This dedicated interface can be inherited only by the proxy.
+// This interface shall be inherited only by the proxy contract.
 interface IFOTTokenIntercepted {
     // subset of IERC20 intercepted in the proxy in order to add a fee
     function transferFrom(address holder, address recipient, uint256 amount) external returns (bool);
@@ -25,8 +25,8 @@ interface IFOTTokenIntercepted {
 }
 
 /// @title FOT (Fee on Transfer) Token
-/// trivial implementation using a fixed fee amount per tx, added to the actual transfer amount.
-/// @notice CustomSuperTokenBase MUST be the first inherited contract, otherwise the storage layout may get corrupted
+/// Simple implementation of a Pure SuperToken taking a constant fee for every transfer operation.
+/// @notice CustomSuperTokenBase MUST be the first inherited contract, otherwise the storage layout breaks.
 contract FOTTokenProxy is CustomSuperTokenBase, UUPSProxy, Ownable, IFOTTokenCustom, IFOTTokenIntercepted {
     uint256 public feePerTx; // amount detracted as fee per tx
     address public feeRecipient; // receiver of the fee
@@ -84,5 +84,4 @@ contract FOTTokenProxy is CustomSuperTokenBase, UUPSProxy, Ownable, IFOTTokenCus
     }
 }
 
-// TODO: create interfaces IFOTTokenCustom, IFOTToken - see https://github.com/superfluid-finance/protocol-monorepo/blob/dev/packages/ethereum-contracts/contracts/interfaces/tokens/ISETH.sol
 interface IFOTToken is ISuperToken, IFOTTokenCustom {}
