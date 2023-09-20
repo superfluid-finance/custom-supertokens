@@ -55,7 +55,7 @@ contract FOTTokenProxy is CustomSuperTokenBase, UUPSProxy, Ownable, IFOTTokenCus
         external override returns (bool)
     {
         _transferFrom(holder, recipient, amount);
-        return true; // returns true if it didn't revert
+        return true;
     }
 
     function transfer(address recipient, uint256 amount)
