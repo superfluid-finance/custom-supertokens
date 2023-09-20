@@ -1,5 +1,5 @@
-// SPDX-License-Identifier: AGPLv3
-pragma solidity ^0.8.0;
+// SPDX-License-Identifier: MIT OR Apache-2.0
+pragma solidity 0.8.19;
 
 // This file contains everything we need for a customized Pure SuperToken.
 // It imports needed dependencies from the Superfluid framework and OpenZeppelin.
