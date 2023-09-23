@@ -22,10 +22,10 @@ interface IMintBurn {
  */
 contract BridgedSuperToken is SuperToken, IMintBurn {
     // the account with upgrade permission. In order to change, upgrade to a logic with different value.
-    address immutable UPGRADE_ADMIN;
+    address public immutable UPGRADE_ADMIN;
 
     // the account with mint/burn permission. In order to change, upgrade to a logic with different value.
-    address immutable BRIDGE_ADDR;
+    address public immutable BRIDGE_ADDR;
 
     error NO_PERMISSION();
 

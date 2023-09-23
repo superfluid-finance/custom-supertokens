@@ -206,7 +206,7 @@ Hands upgradability permission to a hardcoded account `UPGRADE_ADMIN`.
 Fork testing using FRACTION on Optimism:
 
 ```
-yarn test:foundry:fraction-on-op
+ ADMIN_ADDR=0x388e96dfe68b30892af93f30f5035602d8d51487 yarn test:fork:fraction-on-op
 ```
 
 Deploy (to Optimism Goerli, using the deployer account as UPGRADE_ADMIN):
