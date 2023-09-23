@@ -6,12 +6,15 @@
 	"scripts": {
 		"build": "truffle compile --all",
 		"test": "truffle test",
+		"test:fork": "scripts/run-test-foundry.sh",
+		"test:fork:fraction-on-op": "TOKEN=0xbd80cfa9d93a87d1bb895f810ea348e496611cd4 scripts/run-fork-test.sh optimism-mainnet BridgedSuperTokenForkTest",
 		"prepare": "husky install"
 	},
 	"dependencies": {
 		"@openzeppelin/contracts": "^4.7.3",
-		"@superfluid-finance/ethereum-contracts": "^1.4.3",
-		"truffle-plugin-verify": "^0.6.0"
+		"@superfluid-finance/ethereum-contracts": "^1.7.1",
+		"@superfluid-finance/metadata": "^1.1.10",
+		"truffle-plugin-verify": "0.6.1"
 	},
 	"devDependencies": {
 		"@decentral.ee/web3-helpers": "^0.5.3",
