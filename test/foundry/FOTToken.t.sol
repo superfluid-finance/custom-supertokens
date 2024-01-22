@@ -17,7 +17,7 @@ contract FOTTokenTest is Test {
     address public alice = address(0x421);
     address public bob = address(0x422);
     address public dan = address(0x423);
-    
+
     constructor() {
         vm.etch(ERC1820RegistryCompiled.at, ERC1820RegistryCompiled.bin);
         SuperfluidFrameworkDeployer sfDeployer = new SuperfluidFrameworkDeployer();
@@ -49,6 +49,7 @@ contract FOTTokenTest is Test {
         vm.startPrank(dan);
         vm.expectRevert("SuperToken: transfer amount exceeds allowance");
         fotToken.transferFrom(alice, bob, 1 ether);
+        vm.stopPrank();
 
         // give allowance
         vm.prank(alice);
@@ -58,6 +59,7 @@ contract FOTTokenTest is Test {
         vm.startPrank(dan);
         vm.expectRevert("SuperToken: transfer amount exceeds allowance");
         fotToken.transferFrom(alice, bob, 1 ether);
+        vm.stopPrank();
 
         // add the fee amount
         vm.prank(alice);
@@ -80,11 +82,13 @@ contract FOTTokenTest is Test {
         vm.expectRevert("Ownable: caller is not the owner"); // dan isn't the owner
         // casting to payable needed because the proxy contains a payable fallback function
         fotToken.setFeeConfig(newTxFee, dan);
+        vm.stopPrank();
 
         vm.startPrank(admin);
         fotToken.setFeeConfig(newTxFee, dan);
 
         deal(address(fotToken), alice, 100 ether);
+        vm.stopPrank();
 
         vm.startPrank(alice);
         fotToken.transfer(bob, 1 ether);
