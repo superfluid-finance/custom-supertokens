@@ -1,28 +1,39 @@
-// SPDX-License-Identifier: AGPLv3
-pragma solidity ^0.8.0;
+// SPDX-License-Identifier: MIT OR Apache-2.0
+pragma solidity 0.8.19;
 
-import {SuperTokenBase} from "./base/SuperTokenBase.sol";
+// This file contains everything we need for a minimal Pure SuperToken.
 
-/// @title Minimal Pure Super Token
-/// @author jtriley.eth
-/// @notice Pre-minted supply. This is includes no custom logic. Used in `PureSuperTokenDeployer`
-contract PureSuperToken is SuperTokenBase {
+// This abstract contract provides storage padding for the proxy
+import { CustomSuperTokenBase } from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/CustomSuperTokenBase.sol";
+// Implementation of UUPSProxy (see https://eips.ethereum.org/EIPS/eip-1822)
+import { UUPSProxy } from "@superfluid-finance/ethereum-contracts/contracts/upgradability/UUPSProxy.sol";
+// Superfluid framework interfaces we need
+import { ISuperToken, ISuperTokenFactory, IERC20 } from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
 
-	/// @dev Upgrades the super token with the factory, then initializes.
-    /// @param factory super token factory for initialization
-	/// @param name super token name
-	/// @param symbol super token symbol
-	/// @param receiver Receiver of pre-mint
-	/// @param initialSupply Initial token supply to pre-mint
+/// @title The Proxy contract for a Pure SuperToken with preminted initial supply.
+contract PureSuperTokenProxy is CustomSuperTokenBase, UUPSProxy {
+
+    // This shall be invoked exactly once after deployment, needed for the token contract to become operational.
     function initialize(
-        address factory,
+        ISuperTokenFactory factory,
         string memory name,
         string memory symbol,
         address receiver,
         uint256 initialSupply
     ) external {
-        _initialize(factory, name, symbol);
-        _mint(receiver, initialSupply, "");
-    }
+        // This call to the factory invokes `UUPSProxy.initialize`, which connects the proxy to the canonical SuperToken implementation.
+        // It also emits an event which facilitates discovery of this token.
+        ISuperTokenFactory(factory).initializeCustomSuperToken(address(this));
 
+        // This initializes the token storage and sets the `initialized` flag of OpenZeppelin Initializable.
+        // This makes sure that it will revert if invoked more than once.
+        ISuperToken(address(this)).initialize(IERC20(address(0)), 18, name, symbol);
+
+        // This mints the specified initial supply to the specified receiver.
+        ISuperToken(address(this)).selfMint(receiver, initialSupply, "");
+    }
 }
+
+// The token interface is just an alias of ISuperToken
+// since we need no custom logic (other than for initialization) in the proxy.
+interface IPureSuperToken is ISuperToken {}

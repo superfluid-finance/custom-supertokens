@@ -1,4 +1,4 @@
-const { web3tx } = require("@decentral.ee/web3-helpers")
+const { web3tx, wad4human } = require("@decentral.ee/web3-helpers")
 const { setWeb3Provider } = require("@decentral.ee/web3-helpers/src/config")
 const { factory: factoryAddrs } = require("./utils/constants")
 
@@ -45,6 +45,19 @@ module.exports = async function (callback) {
 		setWeb3Provider(web3.currentProvider)
 
 		const chainId = await web3.eth.net.getId()
+		console.log("Chain ID:", chainId)
+
+		const deployer = (await web3.eth.getAccounts())[0]
+		const deployerBalance = await web3.eth.getBalance(deployer)
+
+		if (deployerBalance == 0) {
+			throw `deployer ${deployer} has no balance`
+		}
+
+		console.log(
+			`deployer ${deployer} has balance ${wad4human(deployerBalance)}`
+		)
+
 		const factoryAddr = process.env.FACTORY || factoryAddrs[chainId]
 		if (factoryAddr === undefined) {
 			throw "ERR: No SuperTokenFactory address provided of found for the connected chain"
