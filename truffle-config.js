@@ -31,6 +31,10 @@ module.exports = {
 		optimistic_etherscan: process.env.OPTIMISTIC_API_KEY,
 		bscscan: process.env.BSCSCAN_API_KEY,
 		arbiscan: process.env.ARBISCAN_API_KEY,
-		gnosisscan: process.env.GNOSISSCAN_API_KEY
+		gnosisscan: process.env.GNOSISSCAN_API_KEY,
+		celoscan: process.env.CELOSCAN_API_KEY,
+		basescan: process.env.BASESCAN_API_KEY,
+		zkevm_polygonscan: process.env.ZKEVM_POLYGONSCAN_API_KEY,
+		scrollscan: process.env.SCROLLSCAN_API_KEY
 	}
 }

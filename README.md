@@ -56,8 +56,11 @@ RPC=... npx truffle run --network <network> verify <contract_name>@<address> --c
 Example invocation for verifying an instance of `PureSuperTokenProxy` deployed at `0x5A54F0a964AbBbD68f395E8Cc1Ba50f433d443e2`:
 
 ```bash
-RPC=... npx truffle run --network any verify PureSuperTokenProxy@0x5A54F0a964AbBbD68f395E8Cc1Ba50f433d443e2
+RPC=... npx truffle run --network any verify PureSuperTokenProxy@0x5A54F0a964AbBbD68f395E8Cc1Ba50f433d443e2 --custom-proxy PureSuperTokenProxy
 ```
+
+Note that this will output an error message because failing to verify the linked implementation contract (which isn't part of this repository).
+But verification of the proxy contract should succeed, and the implementation contract should already be verified anyway.
 
 If verification succeeded (contract source code visible on that page), you may still need to manually trigger the proxy detection in order to enable the full SuperToken interface in the Explorer (and not just the proxy interface). In order to achieve that, click "More options", then "Is this a proxy?", in the next page "Verify", in the next popup "Save".
 ![image](https://user-images.githubusercontent.com/5479136/228034548-552044dc-5417-44ad-ae95-144e26c99c5e.png)
