@@ -1,0 +1,12 @@
+[submodule "test/lib/forge-std"]
+	path = test/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "foundry/lib/forge-std"]
+	path = foundry/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "foundry/lib/superfluid-protocol-monorepo"]
+	path = foundry/lib/superfluid-protocol-monorepo
+	url = https://github.com/superfluid-finance/protocol-monorepo
+[submodule "foundry/lib/openzeppelin-contracts"]
+	path = foundry/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
