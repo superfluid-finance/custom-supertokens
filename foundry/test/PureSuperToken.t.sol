@@ -7,6 +7,7 @@ import {ERC1820RegistryCompiled} from "@superfluid-finance/ethereum-contracts/co
 import "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
 import "@superfluid-finance/ethereum-contracts/contracts/utils/SuperfluidFrameworkDeployer.sol";
 import "@superfluid-finance/ethereum-contracts/contracts/utils/SuperfluidFrameworkDeploymentSteps.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract PureSuperTokenProxyTest is Test {
 	PureSuperTokenProxy public pureSuperToken;
@@ -18,15 +19,15 @@ contract PureSuperTokenProxyTest is Test {
 		SuperfluidFrameworkDeployer sfDeployer = new SuperfluidFrameworkDeployer();
 		sfDeployer.deployTestFramework();
 		sf = sfDeployer.getFramework();
-		owner = address(this);
+		owner = address(0x1);
 	}
 
 	function testDeploy() public {
 		pureSuperToken = new PureSuperTokenProxy();
-		assertTrue(address(deployedContract) != address(0));
+		assert(address(pureSuperToken) != address(0));
 	}
 
-	function testSuperTokenBalance(uint256 x) public {
+	function testSuperTokenBalance() public {
 		pureSuperToken = new PureSuperTokenProxy();
 		pureSuperToken.initialize(
 			sf.superTokenFactory,
@@ -35,7 +36,8 @@ contract PureSuperTokenProxyTest is Test {
 			owner,
 			1000
 		);
-		uint balance = pureSuperToken.balanceOf(owner);
-		assertTrue(balance == 1000);
+		IERC20 pureSuperTokenERC20 = IERC20(address(pureSuperToken));
+		uint balance = pureSuperTokenERC20.balanceOf(owner);
+		assert(balance == 1000);
 	}
 }
