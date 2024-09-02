@@ -1,0 +1,51 @@
+name: Reusable Workflow | Check SDK-Core Schema Against Deployed Subgraphs
+
+on:
+  workflow_call:
+    inputs:
+      subgraph-release:
+        required: true
+        type: string
+
+jobs:
+  check-subgraph-indexing-statuses-on-deployed-networks:
+    name: Check SDK-Core Schema Against Deployed Subgraphs (${{ inputs.subgraph-release }})
+
+    runs-on: ubuntu-latest
+
+    env:
+      sdk-core-working-directory: ./packages/sdk-core
+
+    defaults:
+      run:
+        shell: nix develop .#ci-default -c bash -xe {0}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: cachix/install-nix-action@v19
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Install dependencies"
+        run: yarn install --frozen-lockfile
+
+      - name: "Build contracts"
+        run: yarn build
+        working-directory: ./packages/ethereum-contracts
+
+      - name: "Build SDK-Core"
+        run: yarn build
+        working-directory: ${{ env.sdk-core-working-directory }}
+
+      - name: Get Hosted Service Networks from metadata
+        run: npx ts-node ./scripts/getHostedServiceNetworks.ts
+        working-directory: ./packages/subgraph
+
+      - name: Run schema check
+        run: |
+          ./tasks/setupTestEnvironment.sh
+          ./tasks/testSchemasAndQueries.sh
+        working-directory: ${{ env.sdk-core-working-directory }}
+        env:
+          SUBGRAPH_RELEASE_TAG: ${{ inputs.subgraph-release }}

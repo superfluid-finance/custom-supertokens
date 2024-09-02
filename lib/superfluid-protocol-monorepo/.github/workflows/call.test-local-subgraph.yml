@@ -1,0 +1,111 @@
+name: Reusable Workflow | Run Unit and Integration Tests on Local Subgraph
+
+on:
+  workflow_call:
+
+jobs:
+  subgraph-unit-tests:
+    name: Run subgraph unit tests
+    runs-on: ubuntu-latest
+
+    env:
+      subgraph-working-directory: ./packages/subgraph
+
+    defaults:
+      run:
+        # FIXME: subgraph test fails with node20
+        shell: nix develop .#ci-node18 -c bash -xe {0}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: cachix/install-nix-action@v19
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Initialize devShell
+        run: |
+          set -ex
+          node --version
+          yarn --version
+
+      - name: "Install dependencies"
+        run: |
+          set -ex
+          yarn install --frozen-lockfile
+          npx tsc --version
+
+      - name: "Build contracts"
+        run: |
+          yarn lint
+          yarn build
+        working-directory: ./packages/ethereum-contracts
+
+      - name: "Build"
+        run: npx ts-node scripts/buildNetworkConfig.ts polygon-mainnet
+        working-directory: ${{ env.subgraph-working-directory }}
+
+      - name: "Run unit tests"
+        run: yarn matchstick
+        working-directory: ${{ env.subgraph-working-directory }}
+
+  subgraph-end-to-end-integration:
+    name: Run subgraph integration tests
+
+    runs-on: ubuntu-latest
+
+    env:
+      subgraph-working-directory: ./packages/subgraph
+      sdk-core-working-directory: ./packages/sdk-core
+
+    defaults:
+      run:
+        shell: nix develop .#ci-node18 -c bash -xe {0}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: cachix/install-nix-action@v19
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Install dependencies"
+        run: yarn install --frozen-lockfile
+
+      - name: "Build contracts"
+        run: yarn build
+        working-directory: ./packages/ethereum-contracts
+
+      - name: "Start hardhat node"
+        run: |
+          ./tasks/startHardhatNode.sh start
+        working-directory: ${{ env.sdk-core-working-directory }}
+
+      - name: "Build SDK-Core"
+        # build sdk-core because subgraph tests use sdk-core
+        run: yarn build
+        working-directory: ${{ env.sdk-core-working-directory }}
+
+      - name: "Deploy Framework and Tokens"
+        run: npx hardhat run dev-scripts/run-deploy-contracts-and-token.js --network localhost
+        working-directory: ./packages/ethereum-contracts
+
+      - name: "Prepare files for local testing"
+        run: yarn prepare-local
+        working-directory: ${{ env.subgraph-working-directory }}
+
+      - name: "Run setup-graph-node"
+        run: |
+          chmod +x ./tasks/setup-graph-node.sh
+          ./tasks/setup-graph-node.sh
+        working-directory: ${{ env.subgraph-working-directory }}
+
+      - name: "Docker compose"
+        run: |
+          docker rm subgraph_graph-node_1 || true
+          docker compose up &
+        working-directory: ${{ env.subgraph-working-directory }}
+
+      - name: "Run subgraph integration test suite"
+        run: yarn test --network localhost
+        working-directory: ${{ env.subgraph-working-directory }}

@@ -1,0 +1,60 @@
+name: Reusable Workflow | Test Spec Haskell
+
+on:
+  workflow_call:
+
+jobs:
+  test-spec-haskell:
+    name: Test Spec Haskell - Linux - ${{ matrix.compiler-name }}
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        include:
+          #- compiler-name: ghc-9.2
+          #  dev-shell-type: ci-spec-ghc92
+          - compiler-name: ghc-9.4
+            dev-shell-type: ci-spec-ghc94
+      fail-fast: false
+
+    defaults:
+      run:
+        shell: nix develop .#${{ matrix.dev-shell-type }} -c bash -xe {0}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: cachix/install-nix-action@v19
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Initialize devShell
+        run: |
+          set -xe
+          cabal --version
+          ghc --version
+
+      - name: Run cabal update
+        run: |
+          cabal v2-update
+
+      - name: Run lint
+        run: |
+          cd packages/spec-haskell
+          make lint
+
+      - name: Run build
+        run: |
+          cd packages/spec-haskell
+          make build
+
+      - name: Run tests
+        run: |
+          cd packages/spec-haskell
+          make test
+
+      - name: Make haddock docs
+        run: |
+          cd packages/spec-haskell
+          make docs-haddock
