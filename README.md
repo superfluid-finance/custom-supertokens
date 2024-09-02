@@ -1,66 +1,69 @@
-## Foundry
+# Custom Super Tokens
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+This repository shows how to implement custom SuperTokens.
 
-Foundry consists of:
+More examples coming soon.
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+## Setup
 
-## Documentation
+To set up the repo for development, start by cloning the repo
 
-https://book.getfoundry.sh/
-
-## Usage
-
-### Build
-
-```shell
-$ forge build
+```bash
+git clone https://github.com/superfluid-finance/custom-supertokens
+cd custom-supertokens
 ```
 
-### Test
+## Installing Foundry
 
-```shell
-$ forge test
+Make sure you have installed Foundry. If you don't have Foundry on your development environment, please refer to [Foundry Book](https://book.getfoundry.sh/).
+
+First, make sure to have up to date binaries:
+
+```bash
+yarn build
 ```
 
-### Format
+In order to deploy an instance of a Custom Super Token, you can use the included truffe deploy script with the needed ENV vars set:
 
-```shell
-$ forge fmt
+```bash
+CONTRACT=<contract_name> CTOR_ARGS=<args...> INIT_ARGS=<args...> npx truffle exec --network <network> scripts/deploy.js
 ```
 
-### Gas Snapshots
+where `CTOR_ARGS` are the arguments provided to the constructor of the proxy contract (empty / not needed in most cases) and `INIT_ARGS` are the arguments provided to the `initialize` method (excluding the first argument `factory` which is added by the script).
 
-```shell
-$ forge snapshot
+Example invocation for deploying an instance of `PureSuperToken` with the name "my token", symbol "MTK"
+and a total supply of 10 tokens (value provided in wei) minted to the receiver 0x736e4ed1d4467de872fc08d024fbbb71ed470970
+
+```bash
+RPC=... MNEMONIC=... CONTRACT=PureSuperTokenProxy INIT_ARGS="my token","MTK","0x736e4ed1d4467de872fc08d024fbbb71ed470970",10000000000000000000 npx truffle exec --network any scripts/deploy.js
 ```
 
-### Anvil
+In order to figure out which `INIT_ARGS` are needed, check the contract source.
 
-```shell
-$ anvil
+env vars can also be provided via an env file `.env`.
+
+### Verification
+
+You can verify contracts deployed to public networks on etherscan-compatible explorers.
+
+First, you have to provide an API key for the explorer to verify with. See `.env.template` for the relevant ENV vars.
+
+With the API key set, you can trigger verification like this:
+
+```bash
+RPC=... npx truffle run --network <network> verify <contract_name>@<address> --custom-proxy <contract_name>
 ```
 
-### Deploy
+Example invocation for verifying an instance of `PureSuperTokenProxy` deployed at `0x5A54F0a964AbBbD68f395E8Cc1Ba50f433d443e2`:
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+```bash
+RPC=... npx truffle run --network any verify PureSuperTokenProxy@0x5A54F0a964AbBbD68f395E8Cc1Ba50f433d443e2 --custom-proxy PureSuperTokenProxy
 ```
 
-### Cast
+Note that this will output an error message because failing to verify the linked implementation contract (which isn't part of this repository).
+But verification of the proxy contract should succeed, and the implementation contract should already be verified anyway.
 
-```shell
-$ cast <subcommand>
-```
+If verification succeeded (contract source code visible on that page), you may still need to manually trigger the proxy detection in order to enable the full SuperToken interface in the Explorer (and not just the proxy interface). In order to achieve that, click "More options", then "Is this a proxy?", in the next page "Verify", in the next popup "Save".
+![image](https://user-images.githubusercontent.com/5479136/228034548-552044dc-5417-44ad-ae95-144e26c99c5e.png)
 
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+After doing that and heading back to the contract page, you should get additional tabs "Read as Proxy" and "Write as Proxy" providing the full SuperToken interface.
