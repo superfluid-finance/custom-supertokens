@@ -133,4 +133,4 @@ Given the security and safety profile of "via-IR", it is considered OK to use th
 To learn more about Custom Super Tokens, check the following resources:
 
 - [The Custom Super Token Wiki](https://github.com/superfluid-finance/protocol-monorepo/wiki/About-Custom-Super-Token)
-- 
+- [Deploy a Custom Super Token Guide](https://docs.superfluid.finance/docs/protocol/super-tokens/guides/deploy-super-token/deploy-custom-super-token)
