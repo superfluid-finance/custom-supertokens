@@ -4,11 +4,11 @@ pragma solidity ^0.8.26;
 // This file contains everything we need for a minimal Pure SuperToken.
 
 // This abstract contract provides storage padding for the proxy
-import {CustomSuperTokenBase} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/CustomSuperTokenBase.sol";
+import { CustomSuperTokenBase } from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/CustomSuperTokenBase.sol";
 // Implementation of UUPSProxy (see https://eips.ethereum.org/EIPS/eip-1822)
 import { UUPSProxy } from "@superfluid-finance/ethereum-contracts/contracts/upgradability/UUPSProxy.sol";
 // Superfluid framework interfaces we need
-import {ISuperToken, ISuperTokenFactory, IERC20} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
+import { ISuperToken, ISuperTokenFactory, IERC20 } from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
 
 /// @title The Proxy contract for a Pure SuperToken with preminted initial supply.
 contract PureSuperTokenProxy is CustomSuperTokenBase, UUPSProxy {
