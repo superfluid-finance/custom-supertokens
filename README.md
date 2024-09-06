@@ -136,7 +136,7 @@ To learn more about Custom Super Tokens, check the following resources:
 - [The Custom Super Token Wiki](https://github.com/superfluid-finance/protocol-monorepo/wiki/About-Custom-Super-Token)
 - [Deploy a Custom Super Token Guide](https://docs.superfluid.finance/docs/protocol/super-tokens/guides/deploy-super-token/deploy-custom-super-token)
 
-## Bridging with xerc20
+## Bridging with xERC20
 
 [xERC20](https://www.xerc20.com/) is a bridge-agnostic protocol which allows token issuers to _deploy crosschain native tokens with zero slippage, perfect fungibility, and granular risk settings — all while maintaining ownership of your token contracts._.
 
