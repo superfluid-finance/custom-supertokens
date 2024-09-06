@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.23;
+pragma solidity ^0.8.26;
 
-import "@openzeppelin-v5/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin-v5/contracts/token/ERC20/extensions/ERC20Permit.sol";
-import "@openzeppelin-v5/contracts/token/ERC20/extensions/ERC20Votes.sol";
+import { ERC20 } from "@openzeppelin-v5/contracts/token/ERC20/ERC20.sol";
+import { ERC20Permit, Nonces } from "@openzeppelin-v5/contracts/token/ERC20/extensions/ERC20Permit.sol";
+import { ERC20Votes } from "@openzeppelin-v5/contracts/token/ERC20/extensions/ERC20Votes.sol";
 
 /**
  * Stock OpenZeppelin ERC20 with ERC-5805 based Votes extension

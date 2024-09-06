@@ -1,16 +1,14 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.26;
 
 // This file contains show how to create a custom ERC20 Wrapper
 
 // This abstract contract provides storage padding for the proxy
-import {CustomSuperTokenBase} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/CustomSuperTokenBase.sol";
+import { CustomSuperTokenBase } from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/CustomSuperTokenBase.sol";
 // Implementation of UUPSProxy (see https://eips.ethereum.org/EIPS/eip-1822)
-import {UUPSProxy} from "./base/UUPSProxy.sol";
+import { UUPSProxy } from "@superfluid-finance/ethereum-contracts/contracts/upgradability/UUPSProxy.sol";
 // Superfluid framework interfaces we need
-import {ISuperToken, ISuperTokenFactory, IERC20} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
-// for the underlying token
-import {IERC20Metadata} from "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
+import { ISuperToken, ISuperTokenFactory, IERC20Metadata } from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
 
 /// @title The Proxy contract for a Custom ERC20 Wrapper
 contract CustomERC20WrapperProxy is CustomSuperTokenBase, UUPSProxy {

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
-pragma solidity 0.8.23;
+pragma solidity 0.8.26;
 
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 // This abstract contract provides storage padding for the proxy

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
-pragma solidity 0.8.23;
+pragma solidity 0.8.26;
 
 import { IOptimismMintableERC20, IERC165 } from "./interfaces/IOptimismMintableERC20.sol";
 import { BridgedSuperTokenProxy, IBridgedSuperToken, IXERC20 } from "./BridgedSuperToken.sol";
