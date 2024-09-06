@@ -13,7 +13,7 @@ A _custom_ Super Token has custom logic added to this proxy contract.
 
 [CustomERC20WrapperProxy.sol](src/CustomERC20WrapperProxy.sol) shows how a _Wrapper SuperToken_ (has an unerlying ERC20) could be customized.
 
-[xchain](src/xchain) contains more advanced variants of Custom SuperTokens, suited for cross-chain deployments (e.g. bridging ERC20 <-> SuperToken). See the dedicated section #bridging-with-xerc20.
+[xchain](src/xchain) contains more advanced variants of Custom SuperTokens, suited for cross-chain deployments (e.g. bridging ERC20 <-> SuperToken). See [the dedicated section](#bridging-with-xerc20) for more.
 
 ## Setup
 
