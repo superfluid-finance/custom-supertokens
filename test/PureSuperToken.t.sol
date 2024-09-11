@@ -1,43 +1,40 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.26;
 
-import {Test, console2} from "forge-std/Test.sol";
-import {PureSuperTokenProxy} from "../src/PureSuperToken.sol";
-import {ERC1820RegistryCompiled} from "@superfluid-finance/ethereum-contracts/contracts/libs/ERC1820RegistryCompiled.sol";
-import "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
-import "@superfluid-finance/ethereum-contracts/contracts/utils/SuperfluidFrameworkDeployer.sol";
-import "@superfluid-finance/ethereum-contracts/contracts/utils/SuperfluidFrameworkDeploymentSteps.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { Test } from "forge-std/Test.sol";
+import { ISuperToken } from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
+import { SuperfluidFrameworkDeployer } from "@superfluid-finance/ethereum-contracts/contracts/utils/SuperfluidFrameworkDeployer.sol";
+import { ERC1820RegistryCompiled } from "@superfluid-finance/ethereum-contracts/contracts/libs/ERC1820RegistryCompiled.sol";
+import { PureSuperTokenProxy } from "../src/PureSuperToken.sol";
 
 contract PureSuperTokenProxyTest is Test {
-	PureSuperTokenProxy public pureSuperToken;
-	SuperfluidFrameworkDeployer.Framework public sf;
-	address public owner;
+	address constant internal _OWNER = address(0x1);
+	PureSuperTokenProxy internal _superTokenProxy;
+	SuperfluidFrameworkDeployer.Framework internal _sf;
 
 	function setUp() public {
 		vm.etch(ERC1820RegistryCompiled.at, ERC1820RegistryCompiled.bin);
 		SuperfluidFrameworkDeployer sfDeployer = new SuperfluidFrameworkDeployer();
 		sfDeployer.deployTestFramework();
-		sf = sfDeployer.getFramework();
-		owner = address(0x1);
+		_sf = sfDeployer.getFramework();
 	}
 
 	function testDeploy() public {
-		pureSuperToken = new PureSuperTokenProxy();
-		assert(address(pureSuperToken) != address(0));
+		_superTokenProxy = new PureSuperTokenProxy();
+		assert(address(_superTokenProxy) != address(0));
 	}
 
 	function testSuperTokenBalance() public {
-		pureSuperToken = new PureSuperTokenProxy();
-		pureSuperToken.initialize(
-			sf.superTokenFactory,
+		_superTokenProxy = new PureSuperTokenProxy();
+		_superTokenProxy.initialize(
+			_sf.superTokenFactory,
 			"TestToken",
 			"TST",
-			owner,
+			_OWNER,
 			1000
 		);
-		IERC20 pureSuperTokenERC20 = IERC20(address(pureSuperToken));
-		uint balance = pureSuperTokenERC20.balanceOf(owner);
+		ISuperToken superToken = ISuperToken(address(_superTokenProxy));
+		uint balance = superToken.balanceOf(_OWNER);
 		assert(balance == 1000);
 	}
 }

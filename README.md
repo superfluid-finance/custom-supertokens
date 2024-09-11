@@ -2,7 +2,18 @@
 
 This repository shows how to implement custom SuperTokens.
 
-More examples coming soon.
+A custom SuperToken contract typically consists of:
+* (immutable) proxy contract with custom logic
+* (upgradable) logic contract containing ERC20 and SuperToken functionality
+
+By convention, SuperToken contracts are instances of [UUPSProxy](https://github.com/superfluid-finance/protocol-monorepo/blob/dev/packages/ethereum-contracts/contracts/upgradability/UUPSProxy.sol).
+A _custom_ Super Token has custom logic added to this proxy contract.
+
+[PureSuperTokenProxy.sol](src/PureSuperTokenProxy.sol) is the simplest variant of a custom SuperToken. It's a _Pure SuperToken_ (no underlying ERC20) which has its supply minted on creation.
+
+[CustomERC20WrapperProxy.sol](src/CustomERC20WrapperProxy.sol) shows how a _Wrapper SuperToken_ (has an unerlying ERC20) could be customized.
+
+[xchain](src/xchain) contains more advanced variants of Custom SuperTokens, suited for cross-chain deployments (e.g. bridging ERC20 <-> SuperToken). See [the dedicated section](#bridging-with-xerc20) for more.
 
 ## Setup
 
@@ -59,8 +70,8 @@ contract PureSuperTokenProxy is CustomSuperTokenBase, UUPSProxy {
 }
 ```
 
-This contract simply creates a new `UUPSProxy` which gets initialized into a Pure Super Token.
-In the function `initilize`, we use the `SuperTokenFactory` contract, then we mint the full supply of the token to the `receiver`.
+This contract simply creates a new `UUPSProxy` with a custom `initialize` method.
+This method calls `SuperTokenFactory.initializeCustomSuperToken` (which emits events facilitating discovery of the SuperToken), then mints the full supply of the token to the `receiver`.
 
 For more information on the creation of Custom Super Tokens, please refer to the [Technical Documentation](https://docs.superfluid.finance/docs/protocol/super-tokens/guides/deploy-super-token/deploy-custom-super-token) or the [Protocol Wiki](https://github.com/superfluid-finance/protocol-monorepo/wiki/About-Custom-Super-Token).
 
@@ -77,30 +88,29 @@ function setUp() public {
 		vm.etch(ERC1820RegistryCompiled.at, ERC1820RegistryCompiled.bin);
 		SuperfluidFrameworkDeployer sfDeployer = new SuperfluidFrameworkDeployer();
 		sfDeployer.deployTestFramework();
-		sf = sfDeployer.getFramework();
-		owner = address(0x1);
+		_sf = sfDeployer.getFramework();
 	}
 ```
 
 Then the file contains 2 tests, one of deployment and the other to check the receiver's balance
 
 ```solidity
-function testDeploy() public {
-		pureSuperToken = new PureSuperTokenProxy();
-		assert(address(pureSuperToken) != address(0));
+	function testDeploy() public {
+		_superTokenProxy = new PureSuperTokenProxy();
+		assert(address(_superTokenProxy) != address(0));
 	}
 
 	function testSuperTokenBalance() public {
-		pureSuperToken = new PureSuperTokenProxy();
-		pureSuperToken.initialize(
-			sf.superTokenFactory,
+		_superTokenProxy = new PureSuperTokenProxy();
+		_superTokenProxy.initialize(
+			_sf.superTokenFactory,
 			"TestToken",
 			"TST",
-			owner,
+			_OWNER,
 			1000
 		);
-		IERC20 pureSuperTokenERC20 = IERC20(address(pureSuperToken));
-		uint balance = pureSuperTokenERC20.balanceOf(owner);
+		ISuperToken superToken = ISuperToken(address(_superTokenProxy));
+		uint balance = superToken.balanceOf(_OWNER);
 		assert(balance == 1000);
 	}
 ```
@@ -116,17 +126,8 @@ forge test
 There are multiple ways to manage the deployment of a Custom Super Token. One of them is using the following command line by replacing the proper arguments with your requirements:
 
 ```bash
-forge create --rpc-url <RPC_URL_OF_DESIRED_CHAIN> --private-key <YOUR_PVT_KEY> --etherscan-api-key <YOUR_ETHERSCAN_API_KEY> --verify --via-ir src/PureSuperToken.sol:PureSuperTokenProxy
+forge create --rpc-url <RPC_URL_OF_DESIRED_CHAIN> --private-key <YOUR_PRIVATE_KEY> --etherscan-api-key <YOUR_ETHERSCAN_API_KEY> --verify --via-ir src/PureSuperToken.sol:PureSuperTokenProxy
 ```
-
-## Yul Optimization (via-ir)
-
-Given that the testing requires the deployment of the Superfluid Protocol, the use of [Yul Optimization](https://docs.soliditylang.org/en/latest/yul.html) might be warranted.
-
-Quoting from the [Solidity website](https://soliditylang.org/blog/2024/07/12/a-closer-look-at-via-ir/?utm_source=substack&utm_medium=email):
-"via-IR is thoroughly tested and is considered to be at par in terms of security with the legacy compilation pipeline. The IR pipeline is good at running optimizations and eliminating stack too deep errors in most cases. It also generates better gas-optimized code than the default pipeline. Further optimizations are possible after stabilizing the performance. This can make the resultant EVM code more gas-efficient in the longer term."
-
-Given the security and safety profile of "via-IR", it is considered OK to use the flag `--via-ir` during `forge test` or `forge create`.
 
 ## Learn more about Custom Super Tokens
 
@@ -134,3 +135,23 @@ To learn more about Custom Super Tokens, check the following resources:
 
 - [The Custom Super Token Wiki](https://github.com/superfluid-finance/protocol-monorepo/wiki/About-Custom-Super-Token)
 - [Deploy a Custom Super Token Guide](https://docs.superfluid.finance/docs/protocol/super-tokens/guides/deploy-super-token/deploy-custom-super-token)
+
+## Bridging with xERC20
+
+[xERC20](https://www.xerc20.com/) is a bridge-agnostic protocol which allows token issuers to _deploy crosschain native tokens with zero slippage, perfect fungibility, and granular risk settings — all while maintaining ownership of your token contracts._.
+
+[BridgedSuperToken.sol](src/xchain/BridgedSuperToken.sol) extends a Pure SuperToken with the xerc20 interface.
+The core functions are `mint` and `burn`. They leverage the hooks `selfMint` and `selfBurn` provided by the canonical Super Token implementation.
+The rest of the logic is mostly about setting and enforcing rate limits per bridge. The limits are defined as the maximum token amount a bridge can mint or burn per 24 hours (rolling time window).
+
+### Optimism / Superchain Standard Bridge
+
+L2's based on the OP / Superchain stack can use the native [Standard Bridge](https://docs.optimism.io/builders/app-developers/bridging/standard-bridge) for maximum security.
+
+[OPBridgedSuperToken.sol](src/xchain/OPBridgedSuperToken.sol) allows that by implementing the required ´IOptimismMintableERC20` interface.
+Its `mint()` and `burn()` match those of IXERC20, but it adds `bridge()` (address of the bridge contract), `remoteToken()` (address of the token on L1) and `supportsInterface()` (ERC165 interface detection).
+
+### HomeERC20
+
+Is a plain OpenZeppelin based ERC20 with ERC20Votes extension.
+It's suitable for multichain token deployments which want an ERC20 representation on L1 and Super Token representations on L2s.

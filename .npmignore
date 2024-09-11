@@ -1,9 +1,0 @@
-contracts/experimental
-test
-docs
-build
-.env
-.prettierrc
-yarn.lock
-package-lock.json
-truffle-config.js
