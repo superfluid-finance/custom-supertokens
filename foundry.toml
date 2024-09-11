@@ -1,0 +1,13 @@
+[profile.default]
+solc_version = "0.8.26"
+src = "src"
+out = "out"
+libs = ["lib"]
+
+# See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
+
+remappings = [
+    "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts",
+    "@superfluid-finance/=lib/superfluid-protocol-monorepo/packages",
+    "@openzeppelin-v5/contracts/=lib/openzeppelin-contracts-v5/contracts",
+]
