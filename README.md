@@ -9,7 +9,7 @@ A custom SuperToken contract typically consists of:
 By convention, SuperToken contracts are instances of [UUPSProxy](https://github.com/superfluid-finance/protocol-monorepo/blob/dev/packages/ethereum-contracts/contracts/upgradability/UUPSProxy.sol).
 A _custom_ Super Token has custom logic added to this proxy contract.
 
-[PureSuperTokenProxy.sol](src/PureSuperTokenProxy.sol) is the simplest variant of a custom SuperToken. It's a _Pure SuperToken_ (no underlying ERC20) which has its supply minted on creation.
+[PureSuperToken.sol](src/PureSuperToken.sol) is the simplest variant of a custom SuperToken. It's a _Pure SuperToken_ (no underlying ERC20) which has its supply minted on creation.
 
 [CustomERC20WrapperProxy.sol](src/CustomERC20WrapperProxy.sol) shows how a _Wrapper SuperToken_ (has an unerlying ERC20) could be customized.
 
