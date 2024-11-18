@@ -22,7 +22,7 @@ contract PureSuperTokenProxy is CustomSuperTokenBase, UUPSProxy {
 	) external {
 		// This call to the factory invokes `UUPSProxy.initialize`, which connects the proxy to the canonical SuperToken implementation.
 		// It also emits an event which facilitates discovery of this token.
-		ISuperTokenFactory(factory).initializeCustomSuperToken(address(this));
+		factory.initializeCustomSuperToken(address(this));
 
 		// This initializes the token storage and sets the `initialized` flag of OpenZeppelin Initializable.
 		// This makes sure that it will revert if invoked more than once.
