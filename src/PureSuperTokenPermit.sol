@@ -30,7 +30,6 @@ contract PureSuperTokenPermitProxy is CustomSuperTokenBase, UUPSProxy, IERC20Per
 
     /// @dev Mismatched signature.
     error ERC2612InvalidSigner(address signer, address owner);
-
     constructor(string memory name) EIP712(name, "1") {}
 
     // This shall be invoked exactly once after deployment, needed for the token contract to become operational.
