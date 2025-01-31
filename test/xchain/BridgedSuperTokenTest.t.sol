@@ -390,4 +390,24 @@ contract BridgedSuperTokenTest is Test {
         assertEq(_xerc20.mintingMaxLimitOf(_minter), 0);
         assertEq(_xerc20.burningMaxLimitOf(_minter), 0);
     }
+
+    function testStorageLayout() public {
+        BridgedSuperTokenStorageTest storageTestContract = new BridgedSuperTokenStorageTest();
+        storageTestContract.validateStorageLayout();
+    }
+}
+
+contract BridgedSuperTokenStorageTest is BridgedSuperTokenProxy {
+    error STORAGE_LOCATION_CHANGED(string _name);
+
+    function validateStorageLayout() public pure {
+        uint256 slot;
+        uint256 offset;
+
+        // storage slots 0-31: reserved for SuperToken logic via CustomSuperTokenBase
+        // storage slot 32: Ownable | address _owner
+
+        assembly { slot := bridges.slot offset := bridges.offset }
+        if (slot != 33 || offset != 0) revert STORAGE_LOCATION_CHANGED("bridges");
+    }
 }
